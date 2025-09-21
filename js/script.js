@@ -22,3 +22,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+// --- Password Visibility Toggle for Sign Up Page ---
+const togglePasswordIcons = document.querySelectorAll('.toggle-password');
+
+if (togglePasswordIcons) {
+    togglePasswordIcons.forEach(icon => {
+        icon.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            
+            // Toggle the input type between password and text
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            
+            // Toggle the icon class
+            this.classList.toggle('fa-eye-slash');
+        });
+    });
+}
