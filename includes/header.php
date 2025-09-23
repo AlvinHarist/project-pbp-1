@@ -31,7 +31,7 @@
                     <a href="#"><i class="fas fa-heart"></i></a>
                     <a href="#"><i class="fas fa-shopping-cart"></i></a>
                     <a href="#"><i class="fas fa-user"></i></a>
-                    <a href="#" class='masuk-icon'>Masuk</a>
+                    <a href="login.php" class='masuk-icon'>Masuk</a>
                     <a href="signup.php" class='daftar-icon'>Daftar</a>
                 </div>
             </div>
