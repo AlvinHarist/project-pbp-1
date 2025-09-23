@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("ssss", $id_user, $fullname, $email, $hashed_password);
 
     if ($stmt->execute()) {
-        echo "Registrasi berhasil!";
+        // echo "Registrasi berhasil!";
     } else {
         echo "Error: " . $stmt->error;
     }
@@ -109,15 +109,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php if (empty($success_message)): ?>
         <form id="signupForm" action="signup.php" method="POST" novalidate>
             <div class="input-group">
-                <label for="fullname">Full Name</label>
+                <label for="fullname">Nama Lengkap</label>
                 <i class="fas fa-user input-icon"></i>
-                <input type="text" id="fullname" name="fullname" placeholder="e.g., John Doe" required value="<?= htmlspecialchars($_POST['fullname'] ?? '') ?>">
+                <input type="text" id="fullname" name="fullname" placeholder="contoh: Uzumaki Naruto" required value="<?= htmlspecialchars($_POST['fullname'] ?? '') ?>">
             </div>
 
             <div class="input-group">
-                <label for="email">Email Address</label>
+                <label for="email">Email</label>
                 <i class="fas fa-envelope input-icon"></i>
-                <input type="email" id="email" name="email" placeholder="e.g., john.doe@example.com" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+                <input type="email" id="email" name="email" placeholder="contoh: naruto@konoha.com" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+            </div>
+
+            <div class="input-group">
+                <label for="alamat">Alamat Rumah</label>
+                <i class="fas fa-location-dot input-icon"></i>
+                <input type="text" id="alamat" name="alamat" placeholder="contoh: Jl. Melati No. 7, Kecamatan X, Kota Y" required value="<?= htmlspecialchars($_POST['alamat'] ?? '') ?>">
             </div>
 
             <div class="input-group">
