@@ -488,7 +488,15 @@ footer {
     color: var(--secondary-color);
     margin-bottom: 30px;
 }
-
+/* Atur posisi ikon */
+/* .input-group .input-icon {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #6c757d; /* warna ikon */
+    font-size: 18px;
+} */
 .input-group {
     margin-bottom: 20px;
     position: relative;
@@ -503,11 +511,22 @@ footer {
 .input-group .input-icon {
     position: absolute;
     left: 15px;
-    top: 45px;
+    /* top: 45px; */
+    top: 50%;
+    transform: translateY(-50%);
     color: var(--accent-color);
 }
 
-.input-group input[type="text"],
+.input-group input[type="text"] {
+    width: 100%;          /* biar penuh mengikuti container */
+    padding: 15px 15px 15px 40px; /* tambah padding biar tinggi lebih besar, 40px biar ada ruang untuk ikon */
+    font-size: 16px;       /* perbesar teks */
+    border: 1px solid #ccc;
+    border-radius: 8px;    /* biar ada sudut membulat */
+    box-sizing: border-box;
+}
+
+.input-group textarea,
 .input-group input[type="email"],
 .input-group input[type="password"] {
     width: 100%;

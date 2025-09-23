@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // 1. Sanitize and retrieve form data
     $fullname = trim($_POST['fullname']);
     $email = trim($_POST['email']);
+    $alamat = trim($_POST['alamat']);
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
 
@@ -28,7 +29,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Invalid email format.";
     }
 
-    // 4. Validate Password
+    // 4. Validate Address
+    if (empty($alamat)) {
+        $errors[] = "Alamat wajib diisi!";
+    }
+
+    // 5. Validate Password
     if (empty($password)) {
         $errors[] = "Password is required.";
     } elseif (strlen($password) < 8) {
@@ -67,12 +73,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // hash password
     $hashed_password = md5($password);
 
-    $stmt = $conn->prepare("INSERT INTO user (id, Nama, Email, Password, Role) VALUES (?, ?, ?, ?, 'Pembeli')");
-    $stmt->bind_param("ssss", $id_user, $fullname, $email, $hashed_password);
+    $stmt = $conn->prepare("INSERT INTO user (id, Nama, Email, alamat, Password, Role) VALUES (?, ?, ?, ?, ?, 'Pembeli')");
+    $stmt->bind_param("sssss", $id_user, $fullname, $email, $alamat, $hashed_password);
 
     if ($stmt->execute()) {
         // echo "Registrasi berhasil!";
-    } else {
+    } else { 
         echo "Error: " . $stmt->error;
     }
 
