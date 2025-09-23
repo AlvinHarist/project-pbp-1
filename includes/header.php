@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookHaven - Discover Your Next Great Read</title>
+    <title>BukaBuku</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +15,7 @@
 <header>
     <div class="container">
         <nav>
-            <a href="#" class="logo">BukaBuku</a>
+            <a href="http://localhost/Book-Store/index.php" class="logo">BukaBuku</a>
             <ul>
                 <li><a href="#">Kategori</a></li>
                 <li><a href="#">Bestsellers</a></li>
@@ -31,7 +31,7 @@
                     <a href="#"><i class="fas fa-heart"></i></a>
                     <a href="#"><i class="fas fa-shopping-cart"></i></a>
                     <a href="#"><i class="fas fa-user"></i></a>
-                    <a href="#" class='masukr-icon'>Masuk</a>
+                    <a href="#" class='masuk-icon'>Masuk</a>
                     <a href="signup.php" class='daftar-icon'>Daftar</a>
                 </div>
             </div>

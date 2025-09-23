@@ -11,6 +11,9 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+CREATE DATABASE IF NOT EXISTS toko_buku;
+USE toko_buku;
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -21,13 +24,12 @@ SET time_zone = "+00:00";
 -- Database: `toko_buku`
 --
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `buku`
 --
 
-CREATE TABLE `buku` (
+CREATE TABLE buku (
   `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `Judul` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `Penulis` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -44,7 +46,7 @@ CREATE TABLE `buku` (
 -- Dumping data for table `buku`
 --
 
-INSERT INTO `buku` (`id`, `Judul`, `Penulis`, `Penerbit`, `Tahun`, `Harga`, `Stok`, `Tanggal_Masuk`, `Deskripsi`, `ID_Kategori`) VALUES
+INSERT INTO buku (`id`, `Judul`, `Penulis`, `Penerbit`, `Tahun`, `Harga`, `Stok`, `Tanggal_Masuk`, `Deskripsi`, `ID_Kategori`) VALUES
 ('B001', 'Laut Bercerita', 'Leila S. Chudori', 'Gramedia Pustaka Utama', '2017', 100000, 50, '2025-09-21 06:35:02', 'Sebuah novel yang menggambarkan kehidupan di era reformasi.', 1),
 ('B002', 'Cantik Itu Luka', 'Eka Kurniawan', 'Gramedia Pustaka Utama', '2002', 95000, 60, '2025-09-21 06:35:02', 'Novel yang menggabungkan realisme magis dengan sejarah Indonesia.', 1),
 ('B003', 'Lukacita', 'Valerie Patkar', 'Gramedia Pustaka Utama', '2021', 120000, 40, '2025-09-21 06:35:02', 'Cerita tentang kehidupan remaja dan pencarian jati diri.', 2),
@@ -82,7 +84,7 @@ INSERT INTO `buku` (`id`, `Judul`, `Penulis`, `Penerbit`, `Tahun`, `Harga`, `Sto
 -- Table structure for table `detail_transaksi`
 --
 
-CREATE TABLE `detail_transaksi` (
+CREATE TABLE detail_transaksi (
   `ID_Detail` int(11) NOT NULL,
   `ID_Transaksi` varchar(20) NOT NULL,
   `ID_Buku` varchar(50) NOT NULL,
@@ -94,7 +96,7 @@ CREATE TABLE `detail_transaksi` (
 -- Dumping data for table `detail_transaksi`
 --
 
-INSERT INTO `detail_transaksi` (`ID_Detail`, `ID_Transaksi`, `ID_Buku`, `Jumlah`, `Harga_Satuan`) VALUES
+INSERT INTO detail_transaksi (`ID_Detail`, `ID_Transaksi`, `ID_Buku`, `Jumlah`, `Harga_Satuan`) VALUES
 (1, 'T001', 'B001', 2, 75000.00),
 (2, 'T002', 'B005', 1, 120000.00),
 (3, 'T003', 'B003', 3, 60000.00),
@@ -126,13 +128,12 @@ INSERT INTO `detail_transaksi` (`ID_Detail`, `ID_Transaksi`, `ID_Buku`, `Jumlah`
 (29, 'T029', 'B029', 2, 75000.00),
 (30, 'T030', 'B030', 1, 125000.00);
 
--- --------------------------------------------------------
-
+-- 
 --
 -- Table structure for table `kategori`
 --
 
-CREATE TABLE `kategori` (
+CREATE TABLE kategori (
   `id` int(20) NOT NULL,
   `Nama_Kategori` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -141,7 +142,7 @@ CREATE TABLE `kategori` (
 -- Dumping data for table `kategori`
 --
 
-INSERT INTO `kategori` (`id`, `Nama_Kategori`) VALUES
+INSERT INTO kategori (`id`, `Nama_Kategori`) VALUES
 (1, 'Fiksi'),
 (2, 'Non-Fiksi'),
 (3, 'Sejarah'),
@@ -163,13 +164,13 @@ INSERT INTO `kategori` (`id`, `Nama_Kategori`) VALUES
 (19, 'Flora'),
 (20, 'Fauna');
 
--- --------------------------------------------------------
+--
 
 --
 -- Table structure for table `pembayaran`
 --
 
-CREATE TABLE `pembayaran` (
+CREATE TABLE pembayaran (
   `ID_Pembayaran` int(11) NOT NULL,
   `ID_Transaksi` varchar(20) NOT NULL,
   `Metode` enum('Transfer Bank','E-Wallet','COD') NOT NULL,
@@ -181,7 +182,7 @@ CREATE TABLE `pembayaran` (
 -- Dumping data for table `pembayaran`
 --
 
-INSERT INTO `pembayaran` (`ID_Pembayaran`, `ID_Transaksi`, `Metode`, `Status`, `Tanggal_Bayar`) VALUES
+INSERT INTO pembayaran (`ID_Pembayaran`, `ID_Transaksi`, `Metode`, `Status`, `Tanggal_Bayar`) VALUES
 (1, 'T001', 'Transfer Bank', 'Berhasil', '2024-01-15'),
 (2, 'T002', 'E-Wallet', 'Berhasil', '2024-01-18'),
 (3, 'T003', 'COD', 'Pending', '2024-01-20'),
@@ -213,13 +214,13 @@ INSERT INTO `pembayaran` (`ID_Pembayaran`, `ID_Transaksi`, `Metode`, `Status`, `
 (29, 'T029', 'Transfer Bank', 'Berhasil', '2024-04-20'),
 (30, 'T030', 'E-Wallet', 'Berhasil', '2024-04-22');
 
--- --------------------------------------------------------
+-- 
 
 --
 -- Table structure for table `pengiriman`
 --
 
-CREATE TABLE `pengiriman` (
+CREATE TABLE pengiriman (
   `ID_Pengiriman` int(11) NOT NULL,
   `ID_Transaksi` varchar(20) NOT NULL,
   `Kurir` varchar(50) NOT NULL,
@@ -231,7 +232,7 @@ CREATE TABLE `pengiriman` (
 -- Dumping data for table `pengiriman`
 --
 
-INSERT INTO `pengiriman` (`ID_Pengiriman`, `ID_Transaksi`, `Kurir`, `Nomor_Resi`, `Status`) VALUES
+INSERT INTO pengiriman (`ID_Pengiriman`, `ID_Transaksi`, `Kurir`, `Nomor_Resi`, `Status`) VALUES
 (1, 'T001', 'JNE', 'JNE123456ID', 'Sampai'),
 (2, 'T002', 'J&T', 'JNT987654ID', 'Sampai'),
 (3, 'T003', 'POS', 'POS112233ID', 'Dikirim'),
@@ -263,13 +264,13 @@ INSERT INTO `pengiriman` (`ID_Pengiriman`, `ID_Transaksi`, `Kurir`, `Nomor_Resi`
 (29, 'T029', 'JNE', 'JNE666768ID', 'Sampai'),
 (30, 'T030', 'J&T', 'JNT697071ID', 'Sampai');
 
--- --------------------------------------------------------
+-- 
 
 --
 -- Table structure for table `review`
 --
 
-CREATE TABLE `review` (
+CREATE TABLE review (
   `ID_Review` int(11) NOT NULL,
   `ID_User` varchar(50) NOT NULL,
   `ID_Buku` varchar(50) NOT NULL,
@@ -282,7 +283,7 @@ CREATE TABLE `review` (
 -- Dumping data for table `review`
 --
 
-INSERT INTO `review` (`ID_Review`, `ID_User`, `ID_Buku`, `Rating`, `Komentar`, `Tanggal`) VALUES
+INSERT INTO review (`ID_Review`, `ID_User`, `ID_Buku`, `Rating`, `Komentar`, `Tanggal`) VALUES
 (1, 'U001', 'B001', 5, 'Buku bagus dan pengiriman cepat.', '2024-01-16'),
 (2, 'U002', 'B005', 4, 'Isinya oke, tapi kertas agak tipis.', '2024-01-20'),
 (3, 'U003', 'B003', 5, 'Sangat membantu belajar.', '2024-01-25'),
@@ -314,13 +315,13 @@ INSERT INTO `review` (`ID_Review`, `ID_User`, `ID_Buku`, `Rating`, `Komentar`, `
 (29, 'U029', 'B029', 5, 'Recommended banget.', '2024-05-12'),
 (30, 'U030', 'B030', 4, 'Sesuai kebutuhan saya.', '2024-05-15');
 
--- --------------------------------------------------------
+-- 
 
 --
 -- Table structure for table `transaksi`
 --
 
-CREATE TABLE `transaksi` (
+CREATE TABLE transaksi (
   `id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `Tanggal` date NOT NULL,
   `Total_harga` decimal(20,0) NOT NULL,
@@ -333,7 +334,7 @@ CREATE TABLE `transaksi` (
 -- Dumping data for table `transaksi`
 --
 
-INSERT INTO `transaksi` (`id`, `Tanggal`, `Total_harga`, `Status`, `id_user`, `id_buku`) VALUES
+INSERT INTO transaksi (`id`, `Tanggal`, `Total_harga`, `Status`, `id_user`, `id_buku`) VALUES
 ('T001', '2025-09-21', 100000, 'Selesai', 'U001', 'B001'),
 ('T002', '2025-09-20', 190000, 'Dibayar', 'U002', 'B002'),
 ('T003', '2025-09-19', 120000, 'Pending', 'U003', 'B003'),
@@ -365,13 +366,13 @@ INSERT INTO `transaksi` (`id`, `Tanggal`, `Total_harga`, `Status`, `id_user`, `i
 ('T029', '2025-08-24', 198000, 'Selesai', 'U029', 'B029'),
 ('T030', '2025-08-23', 182000, 'Pending', 'U030', 'B030');
 
--- --------------------------------------------------------
+-- 
 
 --
 -- Table structure for table `user`
 --
 
-CREATE TABLE `user` (
+CREATE TABLE user (
   `id` varchar(50) NOT NULL,
   `Nama` varchar(100) NOT NULL,
   `Email` varchar(30) NOT NULL,
@@ -386,7 +387,7 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `Nama`, `Email`, `Password`, `alamat`, `tanggal_masuk`, `Nomor_telepon`, `Role`) VALUES
+INSERT INTO user (`id`, `Nama`, `Email`, `Password`, `alamat`, `tanggal_masuk`, `Nomor_telepon`, `Role`) VALUES
 ('U001', 'User_1', 'user1@example.com', 'a722c63db8ec', 'Jl. Contoh No.1, Kota Dummy', '2025-09-21 06:31:18', '08120000001', 'Pembeli'),
 ('U002', 'User_2', 'user2@example.com', 'c1572d05424d', 'Jl. Contoh No.2, Kota Dummy', '2025-09-21 06:31:18', '08120000002', 'Pembeli'),
 ('U003', 'User_3', 'user3@example.com', '3afc79b597f8', 'Jl. Contoh No.3, Kota Dummy', '2025-09-21 06:31:18', '08120000003', 'Pembeli'),
@@ -418,13 +419,13 @@ INSERT INTO `user` (`id`, `Nama`, `Email`, `Password`, `alamat`, `tanggal_masuk`
 ('U029', 'User_29', 'user29@example.com', '6cf1cd514774', 'Jl. Contoh No.29, Kota Dummy', '2025-09-21 06:31:18', '08120000029', 'Pembeli'),
 ('U030', 'User_30', 'user30@example.com', '60d589174ca2', 'Jl. Contoh No.30, Kota Dummy', '2025-09-21 06:31:18', '08120000030', 'Admin');
 
--- --------------------------------------------------------
+-- 
 
 --
 -- Table structure for table `wishlist`
 --
 
-CREATE TABLE `wishlist` (
+CREATE TABLE wishlist (
   `id` int(50) NOT NULL,
   `Jumlah` int(10) NOT NULL,
   `id_buku` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -435,7 +436,7 @@ CREATE TABLE `wishlist` (
 -- Dumping data for table `wishlist`
 --
 
-INSERT INTO `wishlist` (`id`, `Jumlah`, `id_buku`, `id_user`) VALUES
+INSERT INTO wishlist (`id`, `Jumlah`, `id_buku`, `id_user`) VALUES
 (1, 1, 'B001', 'U001'),
 (2, 2, 'B002', 'U002'),
 (3, 1, 'B003', 'U003'),
@@ -474,14 +475,14 @@ INSERT INTO `wishlist` (`id`, `Jumlah`, `id_buku`, `id_user`) VALUES
 --
 -- Indexes for table `buku`
 --
-ALTER TABLE `buku`
+ALTER TABLE buku
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_buku_kategori` (`ID_Kategori`);
 
 --
 -- Indexes for table `detail_transaksi`
 --
-ALTER TABLE `detail_transaksi`
+ALTER TABLE detail_transaksi
   ADD PRIMARY KEY (`ID_Detail`),
   ADD KEY `fk_detail_transaksi_transaksi` (`ID_Transaksi`),
   ADD KEY `fk_detail_transaksi_buku` (`ID_Buku`);
@@ -489,27 +490,27 @@ ALTER TABLE `detail_transaksi`
 --
 -- Indexes for table `kategori`
 --
-ALTER TABLE `kategori`
+ALTER TABLE kategori
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `pembayaran`
 --
-ALTER TABLE `pembayaran`
+ALTER TABLE pembayaran
   ADD PRIMARY KEY (`ID_Pembayaran`),
   ADD KEY `fk_pembayaran_transaksi` (`ID_Transaksi`);
 
 --
 -- Indexes for table `pengiriman`
 --
-ALTER TABLE `pengiriman`
+ALTER TABLE pengiriman
   ADD PRIMARY KEY (`ID_Pengiriman`),
   ADD KEY `fk_pengiriman_transaksi` (`ID_Transaksi`);
 
 --
 -- Indexes for table `review`
 --
-ALTER TABLE `review`
+ALTER TABLE review
   ADD PRIMARY KEY (`ID_Review`),
   ADD KEY `fk_review_user` (`ID_User`),
   ADD KEY `fk_review_buku` (`ID_Buku`);
@@ -517,7 +518,7 @@ ALTER TABLE `review`
 --
 -- Indexes for table `transaksi`
 --
-ALTER TABLE `transaksi`
+ALTER TABLE transaksi
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_user_transaksi` (`id_user`),
   ADD KEY `fk_buku_transaksi` (`id_buku`);
@@ -525,14 +526,14 @@ ALTER TABLE `transaksi`
 --
 -- Indexes for table `user`
 --
-ALTER TABLE `user`
+ALTER TABLE user
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `EMAIL` (`Email`);
 
 --
 -- Indexes for table `wishlist`
 --
-ALTER TABLE `wishlist`
+ALTER TABLE wishlist
   ADD PRIMARY KEY (`id`,`Jumlah`),
   ADD KEY `fk_wishlist_user` (`id_user`),
   ADD KEY `fk_wishlist_buku` (`id_buku`);
@@ -544,31 +545,31 @@ ALTER TABLE `wishlist`
 --
 -- AUTO_INCREMENT for table `detail_transaksi`
 --
-ALTER TABLE `detail_transaksi`
+ALTER TABLE detail_transaksi
   MODIFY `ID_Detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `pembayaran`
 --
-ALTER TABLE `pembayaran`
+ALTER TABLE pembayaran
   MODIFY `ID_Pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `pengiriman`
 --
-ALTER TABLE `pengiriman`
+ALTER TABLE pengiriman
   MODIFY `ID_Pengiriman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `review`
 --
-ALTER TABLE `review`
+ALTER TABLE review
   MODIFY `ID_Review` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `wishlist`
 --
-ALTER TABLE `wishlist`
+ALTER TABLE wishlist
   MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
@@ -578,19 +579,19 @@ ALTER TABLE `wishlist`
 --
 -- Constraints for table `buku`
 --
-ALTER TABLE `buku`
+ALTER TABLE buku
   ADD CONSTRAINT `fk_buku_kategori` FOREIGN KEY (`ID_Kategori`) REFERENCES `kategori` (`id`);
 
 --
 -- Constraints for table `transaksi`
 --
-ALTER TABLE `transaksi`
+ALTER TABLE transaksi
   ADD CONSTRAINT `fk_user_transaksi` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `wishlist`
 --
-ALTER TABLE `wishlist`
+ALTER TABLE wishlist
   ADD CONSTRAINT `fk_wishlist_buku` FOREIGN KEY (`id_buku`) REFERENCES `buku` (`id`),
   ADD CONSTRAINT `fk_wishlist_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`);
 COMMIT;

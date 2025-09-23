@@ -2,6 +2,8 @@
 // --- PHP VALIDATION SCRIPT ---
 // This block of code must be at the very top of the file, before any HTML.
 
+include "config.php";
+
 $errors = [];
 $success_message = '';
 
@@ -58,6 +60,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // header('Location: login.php');
         // exit();
     }
+
+    // Save the data into the database
+    $id_user = uniqid("U");
+
+    // hash password
+    $hashed_password = md5($password);
+
+    $stmt = $conn->prepare("INSERT INTO user (id, Nama, Email, Password, Role) VALUES (?, ?, ?, ?, 'Pembeli')");
+    $stmt->bind_param("ssss", $id_user, $fullname, $email, $hashed_password);
+
+    if ($stmt->execute()) {
+        echo "Registrasi berhasil!";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+            
 }
 
 // --- END OF PHP SCRIPT ---
