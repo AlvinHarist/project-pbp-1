@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="css/login.css"> <!-- khusus login -->
 </head>
 <body>
-  <header class="navbar">
+  <!-- <header class="navbar">
     <div class="logo">BukaBuku</div>
     <nav>
       <a href="#">Kategori</a>
@@ -39,7 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="search-bar">
       <input type="text" placeholder="Cari buku, penulis, genre...">
     </div>
-  </header>
+  </header>--> 
+  <?php include 'includes/header.php'; ?>
 
   <main class="login-wrapper">
     <div class="login-card">
