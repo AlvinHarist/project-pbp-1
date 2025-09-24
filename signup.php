@@ -81,8 +81,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // hash password
     $hashed_password = md5($password);
 
-    $stmt = $conn->prepare("INSERT INTO user (id, Nama, Email, alamat, Password, Role) VALUES (?, ?, ?, ?, ?, 'Pembeli')");
-    $stmt->bind_param("sssss", $id_user, $fullname, $email, $alamat, $hashed_password);
+    $stmt = $conn->prepare("INSERT INTO user (id, Nama, Email, alamat, Nomor_Telepon, Password, Role) VALUES (?, ?, ?, ?, ?, ?, 'Pembeli')");
+    $stmt->bind_param("ssssss", $id_user, $fullname, $email, $alamat, $nomor_telepon, $hashed_password);
 
     if ($stmt->execute()) {
         // echo "Registrasi berhasil!";
@@ -138,6 +138,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="alamat">Alamat Rumah</label>
                 <i class="fas fa-location-dot input-icon"></i>
                 <input type="text" id="alamat" name="alamat" placeholder="contoh: Jl. Melati No. 7, Kecamatan X, Kota Y" required value="<?= htmlspecialchars($_POST['alamat'] ?? '') ?>">
+            </div>
+
+            <div class="input-group">
+                <label for="nomor_telepon">Nomor Telepon</label>
+                <i class="fas fa-phone input-icon"></i>
+                <input type="text" id="nomor_telepon" name="nomor_telepon" placeholder="contoh: 081234567890" required value="<?= htmlspecialchars($_POST['nomor_telepon'] ?? '') ?>">
             </div>
 
             <div class="input-group">
