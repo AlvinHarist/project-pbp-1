@@ -1,10 +1,12 @@
 <?php include 'includes/header.php'; ?>
 <?php include "config.php"?>
 
+
 <?php
 $sql = "SELECT * FROM buku ORDER BY Tanggal_Masuk DESC LIMIT 5";
 $result = $conn->query($sql);
 ?>
+
 
 
 <section class="hero">
@@ -96,28 +98,55 @@ $result = $conn->query($sql);
             <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="books-grid">
-            <?php while($row = $result->fetch_assoc()): ?>
+
+            <?php
+            // Query untuk mengambil 5 buku terbaru
+            $sql = "SELECT * FROM buku ORDER BY Tanggal_Masuk DESC LIMIT 5";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+            ?>
                 <div class="book-card">
-                    <!-- Cover bisa ditambah kolom gambar di DB -->
-                    <!-- <img src="images/$row['Judul']" alt="<?= $row['Judul'] ?>"> -->
-                    <div class="book-image-container">
-                        <img src="images/<?php echo $row['id']; ?>.jpg" alt="<?php echo $row['Judul']; ?>">
-                    </div>
-                    <div class="book-info">
-                        <p class="category">Rp <?= number_format($row['Harga'], 0, ',', '.') ?></p>
-                        <h3><?= $row['Judul'] ?></h3>
-                        <p>by <?= $row['Penulis'] ?></p>
-                        <div class="book-rating">
-                            <i class="fas fa-star"></i> 4.4 (4532)
+                    <a href="detailproduk.php?id=<?php echo $row['id']; ?>" class="book-link" style="color: inherit; text-decoration: none;">
+                        <div class="book-image-container">
+                        <?php
+                        $imgJpg = 'images/' . $row['id'] . '.jpg';
+                        $imgPng = 'images/' . $row['id'] . '.png';
+                        if (file_exists($imgJpg)) {
+                            $imgPath = $imgJpg;
+                        } elseif (file_exists($imgPng)) {
+                            $imgPath = $imgPng;
+                        } else {
+                            $imgPath = 'images/empty.png';
+                        }
+                        ?>
+                        <img src="<?php echo $imgPath; ?>" alt="<?php echo htmlspecialchars($row['Judul']); ?>">
                         </div>
-                        <div class="book-footer">
-                            <p class="book-price">Rp92.000</p>
-                            <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add</button>
+                        <div class="book-info">
+                            <p class="category">Rp <?php echo number_format($row['Harga'], 0, ',', '.'); ?></p>
+                            <h3><?php echo htmlspecialchars($row['Judul']); ?></h3>
+                            <p>by <?php echo htmlspecialchars($row['Penulis']); ?></p>
+                            <div class="book-rating">
+                                <i class="fas fa-star"></i> 4.4 (4532)
+                            </div>
                         </div>
+                    </a>
+                    <div class="book-footer">
+                        <p class="book-price">Rp <?php echo number_format($row['Harga'], 0, ',', '.'); ?></p>
+                        <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add</button>
+
+
                     </div>
 
                 </div>
-            <?php endwhile; ?>
+
+            <?php
+                }
+            } else {
+                echo "<p>Tidak ada buku tersedia.</p>";
+            }
+            ?>
         </div>
     </div>
 </div>

@@ -23,10 +23,12 @@
                 <li><a href="#">About</a></li>
             </ul>
             <div class="nav-right">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Cari buku, penulis, genre...">
-                </div>
+                <form action="search.php" method="get" class="search-box" role="search">
+                    <label for="q" class="sr-only">Cari</label>
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input id="q" name="q" type="text" placeholder="Cari buku, penulis, genre..." value="<?php echo isset($_GET['q']) ? htmlspecialchars($_GET['q']) : '';?>">
+                    <button type="submit" class="search-submit" aria-label="Cari"><i class="fas fa-arrow-right"></i></button>
+                </form>
                 <div class="icons">
                     <a href="#"><i class="fas fa-heart"></i></a>
                     <a href="#"><i class="fas fa-shopping-cart"></i></a>
