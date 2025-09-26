@@ -1,3 +1,5 @@
+<?php include "includes/header.php"; ?>
+
 <?php
 // login.php
 session_start();
@@ -40,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <input type="text" placeholder="Cari buku, penulis, genre...">
     </div>
   </header>--> 
-  <?php include 'includes/header.php'; ?>
+  
 
   <main class="login-wrapper">
     <div class="login-card">

@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fullname = trim($_POST['fullname']);
     $email = trim($_POST['email']);
     $alamat = trim($_POST['alamat']);
+    $nomor_telepon = trim($_POST['nomor_telepon']);
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
 
@@ -34,7 +35,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Alamat wajib diisi!";
     }
 
-    // 5. Validate Password
+    // 5. Validate Phone Number
+    if (empty($nomor_telepon)) {
+        $errors[] = "Nomor Telepon wajib diisi!";
+    } elseif (!preg_match('/^[0-9]{10,15}$/', $nomor_telepon)) {
+        $errors[] = "Nomor Telepon tidak valid.";
+    }
+
+    // 6. Validate Password
     if (empty($password)) {
         $errors[] = "Password is required.";
     } elseif (strlen($password) < 8) {
