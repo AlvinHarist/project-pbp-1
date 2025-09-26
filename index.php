@@ -1,6 +1,14 @@
 <?php include 'includes/header.php'; ?>
 <?php include "config.php"?>
 
+
+<?php
+$sql = "SELECT * FROM buku ORDER BY Tanggal_Masuk DESC LIMIT 5";
+$result = $conn->query($sql);
+?>
+
+
+
 <section class="hero">
     <div class="container">
         <div class="hero-content">
@@ -90,6 +98,7 @@
             <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="books-grid">
+
             <?php
             // Query untuk mengambil 5 buku terbaru
             $sql = "SELECT * FROM buku ORDER BY Tanggal_Masuk DESC LIMIT 5";
@@ -115,8 +124,12 @@
                     <div class="book-footer">
                         <p class="book-price">Rp <?php echo number_format($row['Harga'], 0, ',', '.'); ?></p>
                         <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add</button>
+
+
                     </div>
+
                 </div>
+
             <?php
                 }
             } else {
@@ -126,5 +139,6 @@
         </div>
     </div>
 </div>
+
 
 <?php include 'includes/footer.php'; ?>

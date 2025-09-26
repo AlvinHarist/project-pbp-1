@@ -30,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="css/login.css"> <!-- khusus login -->
 </head>
 <body>
+
   <!-- <header class="navbar">
     <div class="logo">BukaBuku</div>
     <nav>
@@ -43,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
   </header>--> 
   
+
 
   <main class="login-wrapper">
     <div class="login-card">
