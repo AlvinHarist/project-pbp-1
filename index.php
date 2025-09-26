@@ -110,7 +110,18 @@ $result = $conn->query($sql);
                 <div class="book-card">
                     <a href="detailproduk.php?id=<?php echo $row['id']; ?>" class="book-link" style="color: inherit; text-decoration: none;">
                         <div class="book-image-container">
-                        <img src="images/<?php echo $row['id']; ?>.jpg" alt="<?php echo htmlspecialchars($row['Judul']); ?>">
+                        <?php
+                        $imgJpg = 'images/' . $row['id'] . '.jpg';
+                        $imgPng = 'images/' . $row['id'] . '.png';
+                        if (file_exists($imgJpg)) {
+                            $imgPath = $imgJpg;
+                        } elseif (file_exists($imgPng)) {
+                            $imgPath = $imgPng;
+                        } else {
+                            $imgPath = 'images/empty.png';
+                        }
+                        ?>
+                        <img src="<?php echo $imgPath; ?>" alt="<?php echo htmlspecialchars($row['Judul']); ?>">
                         </div>
                         <div class="book-info">
                             <p class="category">Rp <?php echo number_format($row['Harga'], 0, ',', '.'); ?></p>

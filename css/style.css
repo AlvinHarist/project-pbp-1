@@ -388,6 +388,9 @@ nav ul li a:hover {
     transition: box-shadow 0.3s, transform 0.3s;
     display: flex;
     flex-direction: column;
+    background: var(--white);
+    color: var(--text-color);
+    box-shadow: 0 6px 18px rgba(11,19,28,0.04);
 }
 
 .book-card:hover {
