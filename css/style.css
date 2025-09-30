@@ -91,12 +91,56 @@ nav ul li a:hover {
     color: var(--accent-color);
 }
 
+<<<<<<< HEAD
 .search-box input {
     border: 1px solid var(--border-color);
     border-radius: 20px;
     padding: 10px 15px 10px 40px;
     width: 250px;
     font-family: var(--font-family);
+=======
+.search-box {
+    display: inline-flex;
+    align-items: center;
+}
+
+.search-box input {
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 10px 40px 10px 40px;
+    width: 250px;
+    font-family: var(--font-family);
+    background: var(--white);
+}
+
+.search-box .search-submit {
+    position: absolute;
+    right: 6px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--secondary-color);
+    padding: 8px 10px;
+    border-radius: 50%;
+    transition: background 0.18s, color 0.18s;
+}
+
+.search-box .search-submit:hover {
+    background: rgba(65,90,119,0.08);
+    color: var(--primary-color);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+>>>>>>> e59ae3193bcbaf527cf1fd8d67cb8a63a37298c6
 }
 
 .icons a {
@@ -353,6 +397,12 @@ nav ul li a:hover {
     transition: box-shadow 0.3s, transform 0.3s;
     display: flex;
     flex-direction: column;
+<<<<<<< HEAD
+=======
+    background: var(--white);
+    color: var(--text-color);
+    box-shadow: 0 6px 18px rgba(11,19,28,0.04);
+>>>>>>> e59ae3193bcbaf527cf1fd8d67cb8a63a37298c6
 }
 
 .book-card:hover {
@@ -488,7 +538,19 @@ footer {
     color: var(--secondary-color);
     margin-bottom: 30px;
 }
+<<<<<<< HEAD
 
+=======
+/* Atur posisi ikon */
+/* .input-group .input-icon {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #6c757d; /* warna ikon 
+    font-size: 18px;
+} */
+>>>>>>> e59ae3193bcbaf527cf1fd8d67cb8a63a37298c6
 .input-group {
     margin-bottom: 20px;
     position: relative;
@@ -503,11 +565,30 @@ footer {
 .input-group .input-icon {
     position: absolute;
     left: 15px;
+<<<<<<< HEAD
     top: 45px;
     color: var(--accent-color);
 }
 
 .input-group input[type="text"],
+=======
+    /* top: 45px; */
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent-color);
+}
+
+.input-group input[type="text"] {
+    width: 100%;          /* biar penuh mengikuti container */
+    padding: 15px 15px 15px 40px; /* tambah padding biar tinggi lebih besar, 40px biar ada ruang untuk ikon */
+    font-size: 16px;       /* perbesar teks */
+    border: 1px solid #ccc;
+    border-radius: 8px;    /* biar ada sudut membulat */
+    box-sizing: border-box;
+}
+
+.input-group textarea,
+>>>>>>> e59ae3193bcbaf527cf1fd8d67cb8a63a37298c6
 .input-group input[type="email"],
 .input-group input[type="password"] {
     width: 100%;
@@ -592,4 +673,9 @@ footer {
     border-color: #badbcc;
     color: #0f5132;
     text-align: center;
+<<<<<<< HEAD
 }
+=======
+}
+
+>>>>>>> e59ae3193bcbaf527cf1fd8d67cb8a63a37298c6

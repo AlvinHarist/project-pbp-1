@@ -2,6 +2,7 @@
 // --- PHP VALIDATION SCRIPT ---
 // This block of code must be at the very top of the file, before any HTML.
 
+include "config.php";
 $errors = [];
 $success_message = '';
 
@@ -11,6 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // 1. Sanitize and retrieve form data
     $fullname = trim($_POST['fullname']);
     $email = trim($_POST['email']);
+    $alamat = trim($_POST['alamat']);
+    $nomor_telepon = trim($_POST['nomor_telepon']);
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
 
@@ -27,6 +30,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // 4. Validate Password
+
+    // 4. Validate Address
+    if (empty($alamat)) {
+        $errors[] = "Alamat wajib diisi!";
+    }
+
+    // 5. Validate Phone Number
+    if (empty($nomor_telepon)) {
+        $errors[] = "Nomor Telepon wajib diisi!";
+    } elseif (!preg_match('/^[0-9]{10,15}$/', $nomor_telepon)) {
+        $errors[] = "Nomor Telepon tidak valid.";
+    }
+
+    // 6. Validate Password
     if (empty($password)) {
         $errors[] = "Password is required.";
     } elseif (strlen($password) < 8) {
@@ -58,6 +75,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // header('Location: login.php');
         // exit();
     }
+
+
+    // Save the data into the database
+    $id_user = uniqid("U");
+
+    // hash password
+    $hashed_password = md5($password);
+
+    $stmt = $conn->prepare("INSERT INTO user (id, Nama, Email, alamat, Password, Role) VALUES (?, ?, ?, ?, ?, 'Pembeli')");
+    $stmt->bind_param("sssss", $id_user, $fullname, $email, $alamat, $hashed_password);
+
+    if ($stmt->execute()) {
+        // echo "Registrasi berhasil!";
+    } else { 
+        echo "Error: " . $stmt->error;
+    }
+
+            
 }
 
 // --- END OF PHP SCRIPT ---
@@ -99,6 +134,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="email">Email Address</label>
                 <i class="fas fa-envelope input-icon"></i>
                 <input type="email" id="email" name="email" placeholder="e.g., john.doe@example.com" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+                <label for="fullname">Nama Lengkap</label>
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" id="fullname" name="fullname" placeholder="contoh: Uzumaki Naruto" required value="<?= htmlspecialchars($_POST['fullname'] ?? '') ?>">
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email</label>
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="email" name="email" placeholder="contoh: naruto@konoha.com" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+            </div>
+
+            <div class="input-group">
+                <label for="alamat">Alamat Rumah</label>
+                <i class="fas fa-location-dot input-icon"></i>
+                <input type="text" id="alamat" name="alamat" placeholder="contoh: Jl. Melati No. 7, Kecamatan X, Kota Y" required value="<?= htmlspecialchars($_POST['alamat'] ?? '') ?>">
             </div>
 
             <div class="input-group">

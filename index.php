@@ -1,4 +1,11 @@
 <?php include 'includes/header.php'; ?>
+<?php include "config.php"?>
+
+
+<?php
+$sql = "SELECT * FROM buku ORDER BY Tanggal_Masuk DESC LIMIT 5";
+$result = $conn->query($sql);
+?>
 
 <section class="hero">
     <div class="container">
@@ -81,8 +88,8 @@
         </div>
     </div>
 </section>
-
 <section class="featured-books">
+<div class="featured-books">
     <div class="container">
         <div class="section-header">
             <h2>Featured Books</h2>
@@ -179,5 +186,55 @@
         </div>
     </div>
 </section>
+            <?php
+            // Query untuk mengambil 5 buku terbaru
+            $sql = "SELECT * FROM buku ORDER BY Tanggal_Masuk DESC LIMIT 5";
+            $result = $conn->query($sql);
 
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+            ?>
+                <div class="book-card">
+                    <a href="detailproduk.php?id=<?php echo $row['id']; ?>" class="book-link" style="color: inherit; text-decoration: none;">
+                        <div class="book-image-container">
+                        <?php
+                        $imgJpg = 'images/' . $row['id'] . '.jpg';
+                        $imgPng = 'images/' . $row['id'] . '.png';
+                        if (file_exists($imgJpg)) {
+                            $imgPath = $imgJpg;
+                        } elseif (file_exists($imgPng)) {
+                            $imgPath = $imgPng;
+                        } else {
+                            $imgPath = 'images/empty.png';
+                        }
+                        ?>
+                        <img src="<?php echo $imgPath; ?>" alt="<?php echo htmlspecialchars($row['Judul']); ?>">
+                        </div>
+                        <div class="book-info">
+                            <p class="category">Rp <?php echo number_format($row['Harga'], 0, ',', '.'); ?></p>
+                            <h3><?php echo htmlspecialchars($row['Judul']); ?></h3>
+                            <p>by <?php echo htmlspecialchars($row['Penulis']); ?></p>
+                            <div class="book-rating">
+                                <i class="fas fa-star"></i> 4.4 (4532)
+                            </div>
+                        </div>
+                    </a>
+                    <div class="book-footer">
+                        <p class="book-price">Rp <?php echo number_format($row['Harga'], 0, ',', '.'); ?></p>
+                        <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add</button>
+
+
+                    </div>
+
+                </div>
+
+            <?php
+                }
+            } else {
+                echo "<p>Tidak ada buku tersedia.</p>";
+            }
+            ?>
+        </div>
+    </div>
+</div>
 <?php include 'includes/footer.php'; ?>
