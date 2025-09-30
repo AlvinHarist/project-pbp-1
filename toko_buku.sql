@@ -50,7 +50,7 @@ INSERT INTO buku (`id`, `Judul`, `Penulis`, `Penerbit`, `Tahun`, `Harga`, `Stok`
 ('B001', 'Laut Bercerita', 'Leila S. Chudori', 'Gramedia Pustaka Utama', '2017', 100000, 50, '2025-09-21 06:35:02', 'Sebuah novel yang menggambarkan kehidupan di era reformasi.', 1),
 ('B002', 'Cantik Itu Luka', 'Eka Kurniawan', 'Gramedia Pustaka Utama', '2002', 95000, 60, '2025-09-21 06:35:02', 'Novel yang menggabungkan realisme magis dengan sejarah Indonesia.', 1),
 ('B003', 'Lukacita', 'Valerie Patkar', 'Gramedia Pustaka Utama', '2021', 120000, 40, '2025-09-21 06:35:02', 'Cerita tentang kehidupan remaja dan pencarian jati diri.', 2),
-('B004', 'Heartbreak Motel', 'Valerie Patkar', 'Gramedia Pustaka Utama', '2020', 110000, 45, '2025-09-21 06:35:02', 'Novel romantis dengan konflik yang menyentuh hati.', 2),
+('B004', 'Heartbreak Motel', 'Ika Natassa', 'Gramedia Pustaka Utama', '2020', 110000, 45, '2025-09-21 06:35:02', 'Novel romantis dengan konflik yang menyentuh hati.', 2),
 ('B005', 'Home Sweet Loan', 'Valerie Patkar', 'Gramedia Pustaka Utama', '2022', 115000, 30, '2025-09-21 06:35:02', 'Kisah tentang perjuangan hidup dan cinta di tengah kesulitan finansial.', 2),
 ('B006', 'Maria Beetle', 'Kotaro Isaka', 'Gramedia Pustaka Utama', '2022', 130000, 25, '2025-09-21 06:35:02', 'Thriller Jepang yang penuh aksi dan humor.', 3),
 ('B007', 'Perpustakaan Tengah Malam', 'Matt Haig', 'Gramedia Pustaka Utama', '2021', 125000, 35, '2025-09-21 06:35:02', 'Novel fantasi yang mengajarkan tentang pentingnya pilihan hidup.', 3),
@@ -313,7 +313,9 @@ INSERT INTO review (`ID_Review`, `ID_User`, `ID_Buku`, `Rating`, `Komentar`, `Ta
 (27, 'U027', 'B027', 4, 'Mudah dipahami.', '2024-05-05'),
 (28, 'U028', 'B028', 3, 'Kurang sesuai deskripsi.', '2024-05-09'),
 (29, 'U029', 'B029', 5, 'Recommended banget.', '2024-05-12'),
-(30, 'U030', 'B030', 4, 'Sesuai kebutuhan saya.', '2024-05-15');
+(30, 'U030', 'B030', 4, 'Sesuai kebutuhan saya.', '2024-05-15')
+(31, 'U005', 'B002', 5, 'Rekomendasi banget, worth it.', '2024-02-07'),
+(32, 'U026', 'B002', 4, 'Buku cukup menarik dan bermanfaat.', '2024-05-12');
 
 -- 
 

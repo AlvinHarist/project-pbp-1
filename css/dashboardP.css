@@ -1,0 +1,246 @@
+/* ----------------- Global ----------------- */
+
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #FFFFFF;
+  color: #1B263B;
+}
+
+
+/* ----------------- Hero ----------------- */
+
+.hero {
+  flex: 1;
+  display: block;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 20px;
+  background-color: #FFFFFF;
+  gap: 40px;
+  margin-bottom: 80px;
+}
+
+.hero-text {
+  flex: 1; /* teks ambil separuh */
+  text-align: left;
+}
+
+.hero-image {
+  flex: 1; /* gambar ambil separuh */
+  display: block;
+  justify-content: center;
+  position: relative;
+  overflow: visible;
+}
+
+.hero-image img {
+  max-width: 90%;
+  border-radius: 30px;
+}
+
+
+/* ----------------- Hero Buttons ----------------- */
+
+.buttons .btn-primary, .buttons .btn-secondary {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin: 5px;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: #1B263B;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #BDE3FF;
+  color: #1B263B;
+}
+
+/* ----------------- Book Of Month ----------------- */
+.book-of-the-month {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translate(80px, 40px);
+    width: 200px;          /* tetapkan width */
+    max-height: 200px;     /* batasi tinggi maksimal */
+    background: rgba(209, 223, 250, 0.9);
+    border: 1px solid #a3b5d3;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;  
+    overflow: hidden;             
+    text-overflow: ellipsis;     
+}
+
+.book-of-the-month strong {
+    display: block;
+    font-size: 0.9rem;
+    line-height: 1.2rem;
+    white-space: nowrap;   /* supaya satu baris */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.book-of-the-month {
+    background: rgba(209, 223, 250, 0.9);
+    border: 1px solid #a3b5d3;
+}
+
+.book-of-the-month p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #1B263B;
+}
+
+.book-of-the-month span {
+    font-size: 14px;
+    color: var(--secondary-color);
+}
+
+.book-of-the-month span i {
+    color: var(--star-color);
+}
+
+/* ----------------- Search ----------------- */
+
+.search {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.search input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px 0 0 6px;
+}
+
+.search button {
+  padding: 10px 15px;
+  border: none;
+  background: #1B263B;
+  color: #fff;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+}
+
+/* ----------------- Kategori ----------------- */
+
+.Kategori{
+  padding: 80px 20px;
+  margin-top:170px;
+  background-color: #D5E8FF;
+}
+
+.Kategori h2, .Kategori p {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1B263B;
+}
+
+.category-card {
+  background: #D5E8FF;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  border: 0.5px solid #1B263B;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+}
+
+.category-card i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;       /* ukuran buletan */
+    height: 60px;      /* ukuran buletan */
+    border-radius: 50%; /* bikin bulat */
+    background-color: #f0f0f0; /* warna background bulatan */
+    color: #333;       /* warna ikon */
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.category-card h3, .category-card span{
+  color:#1B263B;
+}
+
+
+/* ----------------- Rekomendasi ----------------- */
+
+.rekomendasi {
+  padding: 40px 20px;
+  margin-top:30px;
+}
+
+.rekomendasi .title-row {
+    display: flex;
+    justify-content: space-between; /* h2 kiri, h3 kanan */
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.rekomendasi .title-row h2 {
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.rekomendasi .title-row h3 {
+    color: #1B263B;
+    font-size: 17px;
+    font-family: Sans Serif;
+    font-weight: 400;
+    word-wrap: break-word
+}
+
+.selengkapnya-link {
+    text-decoration: none;
+    color: #1B263B; 
+    font-weight: 400;
+}
+
+.selengkapnya-link:hover {
+    text-decoration: underline; 
+}
+
+.grid {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.book-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.book-card img {
+  max-width: 100%;
+  border-radius: 6px;
+}
+
+button.add-to-cart-btn {
+  margin-top: 10px;
+  padding: 8px 15px;
+  background-color: #255376;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
