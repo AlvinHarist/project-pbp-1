@@ -1,7 +1,19 @@
 <?php include "config.php"?>
 <?php include 'includes/headerAdmin.php'; ?>
 
-<?php ?>
+
+<?php 
+session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit;
+}
+if ($_SESSION['user']['Role'] !== 'Admin') {
+    header("Location: dashboardAdmin.php");
+    exit;
+}
+?>
+
 
 <!DOCTYPE html>
 <html lang="id">
