@@ -1,0 +1,135 @@
+/* ----------------- Global ----------------- */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #FFFFFF;
+  color: #1B263B;
+}
+
+/* ----------------- Hero ----------------- */
+.hero {
+  padding: 100px 20px 50px 20px; /* jarak dari atas */
+  background-color: #FFFFFF;
+  color: #1B263B;
+}
+
+/* Teks hero */
+.hero-text h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 45px;
+  line-height: 1.2;
+  margin-top: 90px;
+}
+
+.hero-text p {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.hero-text {
+  width: 60%;          /* lebar block teks */
+  margin-left: 40px;   /* dorong ke kanan */
+}
+
+/* ----------------- Hero Buttons ----------------- */
+
+.hero-buttons a {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none;
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  margin-right: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+   margin-left: 40px; 
+}
+
+.hero-buttons a.btn-primary {
+  background-color: #1B263B;
+  color: #FFFFFF;
+}
+
+.hero-buttons a.btn-secondary {
+  background-color: #BDE3FF;
+  color: #1B263B;
+}
+
+.hero-buttons a:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);         
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+}
+
+.hero-buttons a.btn-primary:hover {
+  background-color: #0f1a2a;          
+}
+
+.hero-buttons a.btn-secondary:hover {
+  background-color: #a8d5ff;          
+}
+.hero-buttons {
+    position: absolute; 
+    bottom: 260px;       
+}
+
+/* ----------------- Hero image ----------------- */
+.hero-image {
+  position: absolute;
+  right: 0;          
+  top: 50%;
+  transform: translateY(-50%); 
+  width: 500px;       
+  height: 300px;     
+  overflow: visible;
+}
+
+.hero-image img {
+  width: 120px;
+  height: 165px;
+  border-radius: 20px;
+  position: absolute;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1); /* Tambahkan shadow untuk efek depth */
+}
+
+/* Atur posisi tiap buku - dari kanan ke kiri */
+.hero-image img.book1 { 
+  right: 320px;           /* Paling kanan - nempel ke tepi */
+  top:-135px;
+  transform: rotate(-10deg); 
+  z-index: 4; 
+}
+
+.hero-image img.book2 { 
+  right: 210px;       /* Sedikit tumpang tindih dengan book1 */
+  top: 25px;
+  transform: rotate(10deg); 
+  z-index: 3; 
+}
+
+.hero-image img.book3 { 
+  right: 320px;       /* Sedikit tumpang tindih dengan book2 */
+  top: 190px;
+  transform: rotate(-10deg); 
+  z-index: 2; 
+}
+
+.hero-image img.book4 { 
+  right: 210px;       /* Sedikit tumpang tindih dengan book2 */
+  top: 360px;
+  transform: rotate(10deg); 
+  z-index: 2; 
+}
