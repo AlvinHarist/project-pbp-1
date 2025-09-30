@@ -16,12 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = mysqli_fetch_assoc($result);
 
         $_SESSION['user'] = $user; // simpan semua data user di session
+        // echo "Role kamu adalah: " . $_SESSION['user']['Role'];
 
         // cek role
-        if ($user['role'] === 'admin') {
-            header("Location: dashboard_admin.php");
+        if ($user['Role'] === 'Admin') {
+          
+          header("Location: dashboardAdmin.php");
         } else {
-            header("Location: dashboard_pembeli.php");
+          header("Location: dashboardAdmin.php");
         }
         exit;
     } else {

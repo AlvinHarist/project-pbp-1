@@ -7,8 +7,8 @@ if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit;
 }
-if ($_SESSION['user']['role'] !== 'admin') {
-    header("Location: dashboard_pembeli.php");
+if ($_SESSION['user']['Role'] !== 'Admin') {
+    header("Location: dashboardAdmin.php");
     exit;
 }
 ?>
