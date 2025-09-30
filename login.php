@@ -13,8 +13,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) == 1) {
-        $_SESSION['user'] = mysqli_fetch_assoc($result);
-        header("Location: index.php");
+        $user = mysqli_fetch_assoc($result);
+
+        $_SESSION['user'] = $user; // simpan semua data user di session
+
+        // cek role
+        if ($user['role'] === 'admin') {
+            header("Location: dashboard_admin.php");
+        } else {
+            header("Location: dashboard_pembeli.php");
+        }
         exit;
     } else {
         $error = "Email atau password salah!";
