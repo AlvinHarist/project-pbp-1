@@ -1,64 +1,55 @@
-<?php include "includes/header.php"; ?>
-
 <?php
-// login.php
 session_start();
-include "config.php";
+$page_css = 'css/login.css';
+include 'includes/header.php';
 
+$error = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST["email"];
-    $password = $_POST["password"];
+    // server-side validation
+    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    $password = isset($_POST['password']) ? $_POST['password'] : '';
 
-    $sql = "SELECT * FROM user WHERE Email='$email' AND Password='$password'";
-    $result = mysqli_query($conn, $sql);
-
-    if (mysqli_num_rows($result) == 1) {
-        $_SESSION['user'] = mysqli_fetch_assoc($result);
-        header("Location: index.php");
-        exit;
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Email tidak valid.';
+    } elseif (strlen($password) < 6) {
+        $error = 'Password minimal 6 karakter.';
     } else {
-        $error = "Email atau password salah!";
+        // cek credentials dengan prepared statement
+        $stmt = $conn->prepare("SELECT * FROM user WHERE Email = ? LIMIT 1");
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        if ($res && $res->num_rows === 1) {
+            $user = $res->fetch_assoc();
+            // NOTE: currently passwords are stored plain in DB; if hashed, use password_verify()
+            if ($user['Password'] === $password) {
+                $_SESSION['user'] = $user;
+                header('Location: index.php');
+                exit;
+            } else {
+                $error = 'Email atau password salah.';
+            }
+        } else {
+            $error = 'Email atau password salah.';
+        }
+        $stmt->close();
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <title>Login - BukaBuku</title>
-  <link rel="stylesheet" href="css/style.css"> <!-- umum -->
-  <link rel="stylesheet" href="css/login.css"> <!-- khusus login -->
-</head>
-<body>
 
-  <!-- <header class="navbar">
-    <div class="logo">BukaBuku</div>
-    <nav>
-      <a href="#">Kategori</a>
-      <a href="#">Bestsellers</a>
-      <a href="#">Terbitan Baru</a>
-      <a href="#">About</a>
-    </nav>
-    <div class="search-bar">
-      <input type="text" placeholder="Cari buku, penulis, genre...">
-    </div>
-  </header>--> 
-  
-
-
-  <main class="login-wrapper">
+<main class="login-wrapper">
     <div class="login-card">
       <h2 class="login-title">Masuk</h2>
       <p class="login-subtitle">Masuk ke akun anda untuk mengakses BukaBuku</p>
 
       <?php if (!empty($error)) echo "<p style='color:red'>$error</p>"; ?>
 
-      <form method="POST">
+      <form method="POST" id="login-form" novalidate>
         <label class="login-label">Email</label>
         <input type="email" name="email" class="login-input" required>
 
         <label class="login-label">Password</label>
-        <input type="password" name="password" class="login-input" required>
+        <input type="password" name="password" class="login-input" required minlength="6">
 
         <div class="remember">
           <input type="checkbox" id="remember">
@@ -69,6 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </form>
     </div>
   </main>
-</body>
-</html>
+
+<?php include 'includes/footer.php'; ?>
 

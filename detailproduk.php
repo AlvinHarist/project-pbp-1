@@ -1,22 +1,34 @@
 <?php include 'includes/header.php'; ?>
 <link rel="stylesheet" href="css/style.css"> <!-- umum -->
 <link rel="stylesheet" href="css/detailproduk.css">
-<?php include "config.php"; ?>
 <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 <?php
 $id = isset($_GET['id']) ? $_GET['id'] : '';
 
-$sql = "SELECT * FROM buku WHERE id = '$id'";
-$result = $conn->query($sql);
+// prepared statement to fetch book
+$buku = null;
+if ($id !== '') {
+    $stmt = $conn->prepare("SELECT * FROM buku WHERE id = ? LIMIT 1");
+    $stmt->bind_param('s', $id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($res && $res->num_rows > 0) {
+        $buku = $res->fetch_assoc();
+    }
+    $stmt->close();
+}
 
-// Query review
-$sql_review = "SELECT * FROM review WHERE ID_Buku = '$id'";
-$result_review = $conn->query($sql_review);
-
-if ($result->num_rows > 0) {
-    $buku = $result->fetch_assoc();
+// Query review (prepared)
+$result_review = null;
+if ($buku) {
+    $stmt_r = $conn->prepare("SELECT * FROM review WHERE ID_Buku = ? ORDER BY Tanggal DESC");
+    $stmt_r->bind_param('s', $id);
+    $stmt_r->execute();
+    $result_review = $stmt_r->get_result();
+    $stmt_r->close();
 } else {
     echo "Buku tidak ditemukan!";
+    include 'includes/footer.php';
     exit;
 }
 ?>
@@ -25,8 +37,16 @@ if ($result->num_rows > 0) {
     <div class="container">
         <div class="detail-container">
             <div class="detail-left">
-            <img src="images/<?= $buku['id'] ?>.jpg" alt="<?= htmlspecialchars ($buku['Judul']) ?>">
-            </div>            <div class="detail-right">
+                <?php
+                $imgJpg = 'images/' . $buku['id'] . '.jpg';
+                $imgPng = 'images/' . $buku['id'] . '.png';
+                if (file_exists($imgJpg)) { $imgPath = $imgJpg; }
+                elseif (file_exists($imgPng)) { $imgPath = $imgPng; }
+                else { $imgPath = 'images/empty.png'; }
+                ?>
+                <img src="<?php echo $imgPath; ?>" alt="<?php echo htmlspecialchars($buku['Judul']); ?>">
+                </div>
+                <div class="detail-right">
                 <h1 class="detail-title"><?php echo htmlspecialchars($buku['Judul']); ?></h1>
                 <p class="detail-author">Penulis: <?php echo htmlspecialchars($buku['Penulis']); ?></p>
                 <p class="detail-price">Rp <?php echo number_format($buku['Harga'], 0, ',', '.'); ?></p>

@@ -1,101 +1,55 @@
 <?php
-// --- PHP VALIDATION SCRIPT ---
-// This block of code must be at the very top of the file, before any HTML.
-
-include "config.php";
+// --- PHP VALIDATION & PROCESSING ---
+require_once __DIR__ . '/config/config.php';
 
 $errors = [];
 $success_message = '';
 
-// Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $fullname = trim($_POST['fullname'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $alamat = trim($_POST['alamat'] ?? '');
+    $nomor_telepon = trim($_POST['nomor_telepon'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $password_confirm = $_POST['password_confirm'] ?? '';
 
-    // 1. Sanitize and retrieve form data
-    $fullname = trim($_POST['fullname']);
-    $email = trim($_POST['email']);
-    $alamat = trim($_POST['alamat']);
-    $nomor_telepon = trim($_POST['nomor_telepon']);
-    $password = $_POST['password'];
-    $password_confirm = $_POST['password_confirm'];
+    if ($fullname === '') $errors[] = 'Nama lengkap wajib diisi.';
+    if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Email tidak valid.';
+    if ($alamat === '') $errors[] = 'Alamat wajib diisi.';
+    if ($nomor_telepon === '' || !preg_match('/^[0-9]{7,15}$/', $nomor_telepon)) $errors[] = 'Nomor telepon tidak valid.';
+    if (strlen($password) < 8) $errors[] = 'Password minimal 8 karakter.';
+    if ($password !== $password_confirm) $errors[] = 'Konfirmasi password tidak cocok.';
+    if (!isset($_POST['terms'])) $errors[] = 'Anda harus menyetujui Terms of Service.';
 
-    // 2. Validate Full Name
-    if (empty($fullname)) {
-        $errors[] = "Full Name is required.";
-    }
-
-    // 3. Validate Email
-    if (empty($email)) {
-        $errors[] = "Email is required.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "Invalid email format.";
-    }
-
-    // 4. Validate Address
-    if (empty($alamat)) {
-        $errors[] = "Alamat wajib diisi!";
-    }
-
-    // 5. Validate Phone Number
-    if (empty($nomor_telepon)) {
-        $errors[] = "Nomor Telepon wajib diisi!";
-    } elseif (!preg_match('/^[0-9]{10,15}$/', $nomor_telepon)) {
-        $errors[] = "Nomor Telepon tidak valid.";
-    }
-
-    // 6. Validate Password
-    if (empty($password)) {
-        $errors[] = "Password is required.";
-    } elseif (strlen($password) < 8) {
-        $errors[] = "Password must be at least 8 characters long.";
-    } elseif ($password !== $password_confirm) {
-        $errors[] = "Passwords do not match.";
-    }
-    
-    // 5. Check Terms of Service
-    if (!isset($_POST['terms'])) {
-        $errors[] = "You must agree to the Terms of Service.";
-    }
-
-
-    // If there are no errors, process the data
     if (empty($errors)) {
-        // --- THIS IS WHERE YOU WOULD SAVE THE USER TO A DATABASE ---
-
-        // IMPORTANT: NEVER store plain-text passwords. Always hash them.
-        // $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-        // Example database insertion (pseudo-code):
-        // $sql = "INSERT INTO users (fullname, email, password) VALUES (?, ?, ?)";
-        // $stmt = $pdo->prepare($sql);
-        // $stmt->execute([$fullname, $email, $hashed_password]);
-
-        $success_message = "Account created successfully! You can now log in.";
-        // Optionally, redirect to a login page:
-        // header('Location: login.php');
-        // exit();
+        // check email unique
+        $stmt = $conn->prepare("SELECT id FROM user WHERE Email = ? LIMIT 1");
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        if ($res && $res->num_rows > 0) {
+            $errors[] = 'Email sudah terdaftar.';
+        }
+        $stmt->close();
     }
 
-    // Save the data into the database
-    $id_user = uniqid("U");
-
-    // hash password
-    $hashed_password = md5($password);
-
-    $stmt = $conn->prepare("INSERT INTO user (id, Nama, Email, alamat, Password, Role) VALUES (?, ?, ?, ?, ?, 'Pembeli')");
-    $stmt->bind_param("sssss", $id_user, $fullname, $email, $alamat, $hashed_password);
-
-    if ($stmt->execute()) {
-        // echo "Registrasi berhasil!";
-    } else { 
-        echo "Error: " . $stmt->error;
+    if (empty($errors)) {
+        $id_user = uniqid('U');
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $conn->prepare("INSERT INTO user (id, Nama, Email, alamat, Password, Role) VALUES (?, ?, ?, ?, ?, 'Pembeli')");
+        $stmt->bind_param('sssss', $id_user, $fullname, $email, $alamat, $hashed_password);
+        if ($stmt->execute()) {
+            $success_message = 'Registrasi berhasil. Silakan login.';
+        } else {
+            $errors[] = 'Terjadi kesalahan saat menyimpan data: ' . $stmt->error;
+        }
+        $stmt->close();
     }
-
-            
 }
 
-// --- END OF PHP SCRIPT ---
+include 'includes/header.php';
+
 ?>
-<?php include 'includes/header.php'; ?>
 
 <div class="auth-container">
     <div class="auth-form-wrapper">

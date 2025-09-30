@@ -1,6 +1,5 @@
 <?php
 include 'includes/header.php';
-include 'config.php';
 
 $q = isset($_GET['q']) ? trim($_GET['q']) : '';
 
@@ -10,19 +9,10 @@ if ($q === '') {
     exit;
 }
 
-// Prepared statement untuk menghindari SQL injection
-$keyword = "%" . $conn->real_escape_string($q) . "%";
-$sql = "SELECT id, Judul, Penulis, Harga FROM buku WHERE Judul LIKE ? OR Penulis LIKE ? ORDER BY Tanggal_Masuk DESC";
-
-if ($stmt = $conn->prepare($sql)) {
-    $stmt->bind_param('ss', $keyword, $keyword);
-    $stmt->execute();
-    $result = $stmt->get_result();
-} else {
-    // fallback: lakukan escape sederhana
-    $sql_fallback = "SELECT id, Judul, Penulis, Harga FROM buku WHERE Judul LIKE '" . $keyword . "' OR Penulis LIKE '" . $keyword . "'";
-    $result = $conn->query($sql_fallback);
-}
+// gunakan model & controller baru
+$bookModel = new BookModel($conn);
+$searchController = new SearchController($bookModel);
+$rows = $searchController->handleSearch($q);
 
 ?>
 
@@ -33,8 +23,8 @@ if ($stmt = $conn->prepare($sql)) {
         </div>
 
         <div class="books-grid">
-            <?php if ($result && $result->num_rows > 0): ?>
-                <?php while($row = $result->fetch_assoc()): ?>
+            <?php if (!empty($rows)): ?>
+                <?php foreach($rows as $row): ?>
                     <div class="book-card">
                         <a href="detailproduk.php?id=<?php echo $row['id']; ?>" class="book-link" style="color: inherit; text-decoration: none;">
                             <div class="book-image-container">
@@ -62,7 +52,7 @@ if ($stmt = $conn->prepare($sql)) {
                             <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add</button>
                         </div>
                     </div>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             <?php else: ?>
                 <p>Produk tidak ditemukan.</p>
             <?php endif; ?>
