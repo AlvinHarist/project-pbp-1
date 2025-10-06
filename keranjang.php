@@ -166,6 +166,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                     $conn->commit();
 
+                                    // capture new order id so UI can link to payment
+                                    $newOrderId = $trxId;
+
                                     // write email stub
                                     $emailDir = __DIR__ . '/emails';
                                     if (!is_dir($emailDir)) @mkdir($emailDir, 0755, true);
@@ -207,8 +210,81 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="container" style="padding:40px 0;">
                         <h2>Keranjang Saya</h2>
 
-                        <?php if (!empty($response)) echo '<p style="color:green">' . htmlspecialchars($response) . '</p>'; ?>
-                        <?php if (!empty($errors)) { echo '<div style="color:red"><ul>'; foreach ($errors as $e) echo '<li>' . htmlspecialchars($e) . '</li>'; echo '</ul></div>'; } ?>
+                        <!-- Toast container for nice notifications -->
+                        <div id="toast-container" aria-live="polite" aria-atomic="true" style="position:fixed; top:16px; right:16px; z-index:9999;"></div>
+
+                        <?php
+                            // Prepare messages for JS (safe encoding)
+                            $jsResponse = !empty($response) ? $response : null;
+                            $jsNewOrderId = $newOrderId ?? null;
+                            $jsErrors = !empty($errors) ? $errors : [];
+                        ?>
+                        <script>
+                        (function(){
+                            const response = <?php echo json_encode($jsResponse); ?>;
+                            const newOrderId = <?php echo json_encode($jsNewOrderId); ?>;
+                            const errors = <?php echo json_encode($jsErrors); ?>;
+
+                            // simple toast creator
+                            function showToast(message, type='success', autoHide=5000, html=false){
+                                const container = document.getElementById('toast-container');
+                                if (!container) return;
+                                const t = document.createElement('div');
+                                t.className = 'toast ' + type;
+                                t.style.minWidth = '280px';
+                                t.style.marginBottom = '10px';
+                                t.style.padding = '12px 16px';
+                                t.style.borderRadius = '6px';
+                                t.style.color = '#fff';
+                                t.style.boxShadow = '0 4px 12px rgba(0,0,0,0.12)';
+                                t.style.opacity = '0';
+                                t.style.transition = 'opacity 240ms ease, transform 240ms ease';
+                                t.style.transform = 'translateY(-6px)';
+                                if (html) t.innerHTML = message; else t.textContent = message;
+                                if (type === 'success') t.style.background = '#2e7d32';
+                                if (type === 'error') t.style.background = '#c62828';
+
+                                container.appendChild(t);
+                                // show
+                                requestAnimationFrame(()=>{ t.style.opacity='1'; t.style.transform='translateY(0)'; });
+                                if (autoHide) setTimeout(()=>{ hideToast(t); }, autoHide);
+                                return t;
+                            }
+                            function hideToast(el){
+                                el.style.opacity='0'; el.style.transform='translateY(-6px)';
+                                setTimeout(()=>{ if (el && el.parentNode) el.parentNode.removeChild(el); }, 260);
+                            }
+
+                            // show response as success toast and include payment link if available
+                            if (response) {
+                                let html = false;
+                                let content = response;
+                                if (newOrderId) {
+                                    const link = '<a class="toast-link" href="bayar.php?id=' + encodeURIComponent(newOrderId) + '" style="color:#fff; text-decoration:underline; margin-left:8px;">Bayar Sekarang</a>';
+                                    content = response + ' ' + link;
+                                    html = true;
+                                }
+                                showToast(content, 'success', 6000, html);
+
+                                // auto-redirect after 3s if there is a newOrderId
+                                if (newOrderId) setTimeout(function(){ window.location.href = 'bayar.php?id=' + encodeURIComponent(newOrderId); }, 3000);
+                            }
+
+                            // show each error as an error toast
+                            if (errors && errors.length) {
+                                errors.forEach(function(e, i){
+                                    // stagger toasts a bit
+                                    setTimeout(function(){ showToast(e, 'error', 8000, false); }, i * 300);
+                                });
+                            }
+                        })();
+                        </script>
+
+                        <style>
+                        /* Toast styles (scoped inline so no extra files needed) */
+                        #toast-container .toast { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial; }
+                        #toast-container .toast a.toast-link { color: #fff; font-weight:600; }
+                        </style>
 
                         <?php if (empty($cartItems)): ?>
                             <p>Keranjang kosong.</p>
