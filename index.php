@@ -107,8 +107,8 @@ $result = $conn->query($sql);
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
             ?>
-                <div class="book-card">
-                    <a href="detailproduk.php?id=<?php echo $row['id']; ?>" class="book-link" style="color: inherit; text-decoration: none;">
+                <div class="book-card" data-id="<?php echo htmlspecialchars($row['id']); ?>">
+                    <a href="detailproduk.php?id=<?php echo $row['id']; ?>" class="book-card-link">
                         <div class="book-image-container">
                         <?php
                         $imgJpg = 'images/' . $row['id'] . '.jpg';
@@ -121,7 +121,7 @@ $result = $conn->query($sql);
                             $imgPath = 'images/empty.png';
                         }
                         ?>
-                        <img src="<?php echo $imgPath; ?>" alt="<?php echo htmlspecialchars($row['Judul']); ?>">
+                        <img src="<?php echo $imgPath; ?>" alt="<?php echo htmlspecialchars($row['Judul']); ?>" loading="lazy">
                         </div>
                         <div class="book-info">
                             <p class="category">Rp <?php echo number_format($row['Harga'], 0, ',', '.'); ?></p>

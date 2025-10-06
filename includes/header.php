@@ -1,3 +1,4 @@
+<?php if (session_status() === PHP_SESSION_NONE) session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
-<body>
+<body data-logged-in="<?php echo !empty($_SESSION['user']) ? '1' : '0'; ?>">
 
 <header>
     <div class="container">
@@ -31,10 +32,14 @@
                 </form>
                 <div class="icons">
                     <a href="#"><i class="fas fa-heart"></i></a>
-                    <a href="#"><i class="fas fa-shopping-cart"></i></a>
-                    <a href="#"><i class="fas fa-user"></i></a>
-                    <a href="login.php" class='masuk-icon'>Masuk</a>
-                    <a href="signup.php" class='daftar-icon'>Daftar</a>
+                    <a href="keranjang.php"><i class="fas fa-shopping-cart"></i></a>
+                    <?php if (!empty($_SESSION['user'])): ?>
+                        <a href="DashboardPembeli.php"><i class="fas fa-user"></i></a>
+                        <a href="logout.php" class='masuk-icon'>Keluar</a>
+                    <?php else: ?>
+                        <a href="login.php" class='masuk-icon'>Masuk</a>
+                        <a href="signup.php" class='daftar-icon'>Daftar</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </nav>
