@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           
           header("Location: dashboardAdmin.php");
         } else {
-          header("Location: dashboardAdmin.php");
+          header("Location: dashboardPembeli.php");
         }
         exit;
     } else {
