@@ -1,0 +1,203 @@
+/* ----------------- Global ----------------- */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #FFFFFF;
+  color: #1B263B;
+}
+
+/* ----------------- Hero ----------------- */
+.hero {
+  padding: 100px 20px 50px 20px; /* jarak dari atas */
+  background-color: #FFFFFF;
+  color: #1B263B;
+}
+
+/* Teks hero */
+.hero-text h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 45px;
+  line-height: 1.2;
+  margin-top: 30px;
+}
+
+.hero-text p {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.hero-text {
+  width: 60%;          /* lebar block teks */
+  margin-left: 40px;   /* dorong ke kanan */
+}
+
+/* ----------------- Hero status----------------- */
+.hero-status {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 50px;
+  margin-left: 40px;
+}
+
+.status-container {
+  display: flex;
+  flex-direction: row;   
+  align-items: flex-start;
+  gap: 70px;             /* jarak antar kotak */
+}
+
+.status {
+  display: flex;
+  flex-direction: column;     /* isi (judul + nilai) tetap atas-bawah */
+  align-items: center;        /* isi tengah horizontal */
+  justify-content: center;    /* isi tengah vertical */
+  width: 250px;
+  height: 150px;
+  border-radius: 12px;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  background-color: #1B263B;
+  font-weight: 600;
+  text-align: center;
+}
+
+.judul-status {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.nilai-status {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* ----------------- Hero total----------------- */
+.hero-total {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 30px;
+    margin-left: 40px;
+    position: relative;
+    z-index: 1;
+}
+
+.total-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;   /* biar teks di tengah */
+    background-color: #BDE3FF;
+    padding: 12px 16px;        /* lebih kecil */
+    border-radius: 10px;
+    width: fit-content;        /* menyesuaikan isi */
+    min-width: 160px;          /* biar gak terlalu kecil */
+    min-height: auto;          /* hapus tinggi tetap */
+    text-align: center;
+    color: #000;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    margin-top: 40px;
+    margin-left: 40px;
+}
+
+.judul-total {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.nilai-total {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+/*hero pesanan*/
+/* Kotak besar pembungkus semuanya */
+.pesanan-container {
+  font-family: 'Poppins', sans-serif;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  border-radius: 12px;
+  width: 80%;
+  margin-top: 40px;
+  margin-left: 30px;
+}
+
+/* Bagian atas: judul + jumlah pesanan */
+.rentang-waktu {
+  margin-bottom: 20px;
+}
+
+.judul-pesanan {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.jumlah-pesanan {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+/* Tombol rentang waktu */
+.rentang-btn-container {
+  display: flex;
+  gap: 10px;
+}
+
+.rentang-btn {
+  background-color: #BDE3FF;
+  color:#1B263B;;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.rentang-btn:hover {
+  background-color: #9dcdf1;
+}
+
+/* Kotak daftar pesanan */
+#daftar-pesanan {
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+  margin-left: 30px;
+}
+
+#daftar-pesanan table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 20px;
+}
+
+#daftar-pesanan th, #daftar-pesanan td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+#daftar-pesanan th {
+  background-color: #BDE3FF;
+  color: #1B263B;
+}
+
+#daftar-pesanan tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
