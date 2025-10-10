@@ -1,5 +1,8 @@
-<?php
 // keranjang.php - cart page where checkout creates a pending order (Menunggu Pembayaran)
+<head>
+    <link rel="stylesheet" href="keranjang.css">
+</head>
+<?php
 session_start();
 require_once __DIR__ . '/config.php';
 
@@ -207,6 +210,109 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // render page
                     ?>
                     <?php include 'includes/header.php'; ?>
+                    <style>
+                    body {
+                        background: #f6f8fa;
+                        font-family: 'Segoe UI', Arial, sans-serif;
+                        color: #222;
+                    }
+                    .container {
+                        background: #fff;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+                        padding: 32px 24px;
+                        margin: 32px auto;
+                        max-width: 1100px;
+                    }
+                    h2, h3 {
+                        color: #2e7d32;
+                        margin-bottom: 18px;
+                        padding-left: 10px;
+                    }
+                    .cart-table {
+                        width: 100%;    
+                        border-collapse: collapse;
+                        background: #fafbfc;
+                        border-radius: 8px;
+                        overflow: hidden;
+                        margin-bottom: 18px;
+                    }
+                    .cart-table th, .cart-table td {
+                        padding: 14px 10px;
+                        border-bottom: 1px solid #e0e0e0;
+                        vertical-align: middle;
+                        text-align: center;
+                    }
+                    .cart-table th {
+                        background: #e8f5e9;
+                        color: #388e3c;
+                        font-weight: 600;
+                    }
+                    .cart-table img {
+                        width: 60px;
+                        height: 80px;
+                        object-fit: cover;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                        background: #fff;
+                    }
+                    tfoot td {
+                        background: #f1f8e9;
+                        font-size: 1.1em;
+                    }
+                    input[type="number"] {
+                        border: 1px solid #bdbdbd;
+                        border-radius: 4px;
+                        padding: 6px 10px;
+                        width: 60px;
+                        font-size: 1em;
+                        background: #fff;
+                        transition: border 0.2s;
+                    }
+                    input[type="number"]:focus {
+                        border: 1.5px solid #388e3c;
+                        outline: none;
+                    }
+                    button {
+                        background: #388e3c;
+                        color: #fff;
+                        border: none;
+                        border-radius: 5px;
+                        padding: 8px 18px;
+                        font-size: 1em;
+                        cursor: pointer;
+                        transition: background 0.2s;
+                    }
+                    button:hover, button:focus {
+                        background: #2e7d32;
+                    }
+                    textarea {
+                        border: 1px solid #bdbdbd;
+                        border-radius: 4px;
+                        padding: 8px;
+                        font-size: 1em;
+                        width: 100%;
+                        resize: vertical;
+                        background: #fafbfc;
+                    }
+                    .stock-warning {
+                        color: #c62828 !important;
+                        font-size: 0.95em;
+                        margin-top: 4px;
+                    }
+                    .empty-cart {
+                        text-align: center;
+                        color: #888;
+                        margin: 40px 0 60px 0;
+                        font-size: 1.2em;
+                    }
+                    @media (max-width: 700px) {
+                        .container { padding: 10px 2px; }
+                        .cart-table th, .cart-table td { padding: 8px 4px; font-size: 0.95em; }
+                        .cart-table img { width: 40px; height: 56px; }
+                    }
+                    </style>
+
                     <div class="container" style="padding:40px 0;">
                         <h2>Keranjang Saya</h2>
 
@@ -279,7 +385,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             }
                         })();
                         </script>
-
                         <style>
                         /* Toast styles (scoped inline so no extra files needed) */
                         #toast-container .toast { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial; }
@@ -287,32 +392,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </style>
 
                         <?php if (empty($cartItems)): ?>
-                            <p>Keranjang kosong.</p>
+                            <div class="empty-cart">
+                                <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" alt="Keranjang kosong" style="width:90px; opacity:0.7; margin-bottom:12px;"><br>
+                                Keranjang kosong.
+                            </div>
                         <?php else: ?>
                             <form method="post">
                                 <input type="hidden" name="action" value="update">
-                                <table style="width:100%; border-collapse: collapse;">
+                                <table class="cart-table">
                                     <thead>
                                         <tr>
-                                            <th style="text-align:left; border-bottom:1px solid #ddd; padding:8px">Produk</th>
-                                            <th style="border-bottom:1px solid #ddd; padding:8px">Harga</th>
-                                            <th style="border-bottom:1px solid #ddd; padding:8px">Jumlah</th>
-                                            <th style="border-bottom:1px solid #ddd; padding:8px">Subtotal</th>
-                                            <th style="border-bottom:1px solid #ddd; padding:8px">Aksi</th>
+                                            <th>Produk</th>
+                                            <th>Gambar</th>
+                                            <th>Harga</th>
+                                            <th>Jumlah</th>
+                                            <th>Subtotal</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $grand = 0; foreach ($cartItems as $item): $subtotal = $item['Harga'] * $item['Jumlah']; $grand += $subtotal; ?>
                                         <tr data-id="<?php echo (int)$item['id']; ?>" data-price="<?php echo (float)$item['Harga']; ?>" data-stock="<?php echo (int)($item['Stok'] ?? 0); ?>">
-                                            <td style="padding:8px">
-                                                <?php echo htmlspecialchars($item['Judul']); ?>
-                                                <div class="stock-warning" style="display:none; color:#b71c1c; font-size:13px; margin-top:6px;"><?php echo 'Stok tidak mencukupi.'; ?></div>
+                                            <td>
+                                                <strong><?php echo htmlspecialchars($item['Judul']); ?></strong>
+                                                <div class="stock-warning" style="display:none;"><?php echo 'Stok tidak mencukupi.'; ?></div>
                                             </td>
-                                            <td style="padding:8px">Rp <?php echo number_format($item['Harga'],0,',','.'); ?></td>
-                                            <td style="padding:8px; width:120px"><input type="number" name="qty[<?php echo (int)$item['id']; ?>]" value="<?php echo (int)$item['Jumlah']; ?>" min="0" style="width:70px"></td>
-                                            <td style="padding:8px"><span class="subtotal">Rp <?php echo number_format($subtotal,0,',','.'); ?></span></td>
-                                            <td style="padding:8px">
-                                                <!-- single remove button submits inside the update form -->
+                                            <td>
+                                                <?php
+                                                // Ganti sesuai field gambar di database, misal 'Gambar'
+                                                $img = !empty($item['Gambar']) ? htmlspecialchars($item['Gambar']) : 'https://cdn-icons-png.flaticon.com/512/2038/2038854.png';
+                                                ?>
+                                                <img src="<?php echo $img; ?>" alt="cover">
+                                            </td>
+                                            <td>Rp <?php echo number_format($item['Harga'],0,',','.'); ?></td>
+                                            <td style="width:120px"><input type="number" name="qty[<?php echo (int)$item['id']; ?>]" value="<?php echo (int)$item['Jumlah']; ?>" min="0"></td>
+                                            <td><span class="subtotal">Rp <?php echo number_format($subtotal,0,',','.'); ?></span></td>
+                                            <td>
                                                 <button type="submit" name="remove" value="<?php echo (int)$item['id']; ?>">Hapus</button>
                                             </td>
                                         </tr>
@@ -320,8 +435,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td colspan="3" style="text-align:right; padding:8px"><strong>Total:</strong></td>
-                                            <td style="padding:8px"><strong>Rp <?php echo number_format($grand,0,',','.'); ?></strong></td>
+                                            <td colspan="4" style="text-align:right;"><strong>Total:</strong></td>
+                                            <td><strong>Rp <?php echo number_format($grand,0,',','.'); ?></strong></td>
                                             <td></td>
                                         </tr>
                                     </tfoot>
@@ -329,12 +444,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <p style="margin-top:12px"><button type="submit">Update Keranjang</button></p>
                             </form>
 
+
                             <h3>Checkout</h3>
                             <form method="post">
                                 <input type="hidden" name="action" value="checkout">
-                                <div style="margin-bottom:8px">
-                                    <label for="alamat">Alamat Pengiriman</label><br>
-                                    <textarea name="alamat" id="alamat" rows="3" style="width:100%"></textarea>
+                                <div class="alamat-group" style="margin-bottom:18px;">
+                                    <label for="alamat" style="font-weight:600; display:flex; align-items:center; gap:6px; margin-bottom:6px;">
+                                        <span style="font-size:1.2em; color:#388e3c;">📍</span>
+                                        Alamat Pengiriman
+                                    </label>
+                                    <textarea name="alamat" id="alamat" rows="2" style="
+                                        width:100%;
+                                        min-height:48px;
+                                        max-width:600px;
+                                        background:#fafbfc;
+                                        border:1.5px solid #bdbdbd;
+                                        border-radius:7px;
+                                        padding:10px 14px;
+                                        font-size:1em;
+                                        transition: border 0.2s;
+                                        resize: vertical;
+                                        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+                                    " placeholder="Masukkan alamat lengkap pengiriman..."></textarea>
                                 </div>
                                 <button type="submit">Checkout Sekarang</button>
                             </form>
