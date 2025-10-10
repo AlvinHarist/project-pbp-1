@@ -444,7 +444,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <p style="margin-top:12px"><button type="submit">Update Keranjang</button></p>
                             </form>
 
-
                             <h3>Checkout</h3>
                             <form method="post">
                                 <input type="hidden" name="action" value="checkout">
