@@ -40,7 +40,7 @@ if ($_SESSION['user']['Role'] !== 'Admin') {
                     <p>Pantau aktivitas dan statistik BukaBuku secara real-time</p>
                 </div>
                 <div class="hero-buttons">
-                    <a href="#" class="btn btn-primary">Manajemen Produk</a>
+                    <a href="manajemenProduk.php" class="btn btn-primary">Manajemen Produk</a>
                     <a href="#" class="btn btn-secondary">Manajemen Pesanan</a>
                 </div>
                 <div class="hero-image">

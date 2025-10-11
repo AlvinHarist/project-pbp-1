@@ -4,20 +4,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
 
     // Add a click event listener to each button
+    const loggedIn = document.body.dataset.loggedIn === '1';
     addToCartButtons.forEach(button => {
         button.addEventListener('click', (event) => {
-            // Prevent the default button action
             event.preventDefault();
-
-            // Get the book title from the parent card
             const bookCard = button.closest('.book-card');
-            const bookTitle = bookCard.querySelector('h3').textContent;
+            const title = bookCard.querySelector('h3') ? bookCard.querySelector('h3').textContent.trim() : '';
 
-            // Show a confirmation message (for demonstration)
-            alert(`'${bookTitle}' has been added to your cart! (This is a demo)`);
+            if (!loggedIn) {
+                alert('Silakan masuk dahulu untuk menambahkan barang ke keranjang.');
+                window.location.href = 'login.php';
+                return;
+            }
 
-            // In a real application, you would add the item to a cart object,
-            // update the cart icon count, and maybe save it to localStorage.
+            // Try to find a data-id on the card or image
+            const bookId = bookCard.dataset.id || bookCard.querySelector('img')?.getAttribute('src')?.match(/([A-Za-z0-9_-]+)\.jpg$/)?.[1];
+
+            if (!bookId) {
+                alert('Gagal menambahkan ke keranjang: ID buku tidak diketahui.');
+                return;
+            }
+
+            // create a small form and submit to keranjang.php?action=add
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.action = 'keranjang.php?action=add';
+
+            const idInput = document.createElement('input');
+            idInput.type = 'hidden';
+            idInput.name = 'id_buku';
+            idInput.value = bookId;
+            form.appendChild(idInput);
+
+            const qtyInput = document.createElement('input');
+            qtyInput.type = 'hidden';
+            qtyInput.name = 'jumlah';
+            qtyInput.value = 1;
+            form.appendChild(qtyInput);
+
+            document.body.appendChild(form);
+            form.submit();
         });
     });
 
