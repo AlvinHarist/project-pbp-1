@@ -3,7 +3,6 @@
 // This block of code must be at the very top of the file, before any HTML.
 
 include "config.php";
-
 $errors = [];
 $success_message = '';
 
@@ -29,6 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Invalid email format.";
     }
+
+    // 4. Validate Password
 
     // 4. Validate Address
     if (empty($alamat)) {
@@ -74,6 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // header('Location: login.php');
         // exit();
     }
+
 
     // Save the data into the database
     $id_user = uniqid("U");
@@ -123,6 +125,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php if (empty($success_message)): ?>
         <form id="signupForm" action="signup.php" method="POST" novalidate>
             <div class="input-group">
+                <label for="fullname">Full Name</label>
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" id="fullname" name="fullname" placeholder="e.g., John Doe" required value="<?= htmlspecialchars($_POST['fullname'] ?? '') ?>">
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="email" name="email" placeholder="e.g., john.doe@example.com" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
                 <label for="fullname">Nama Lengkap</label>
                 <i class="fas fa-user input-icon"></i>
                 <input type="text" id="fullname" name="fullname" placeholder="contoh: Uzumaki Naruto" required value="<?= htmlspecialchars($_POST['fullname'] ?? '') ?>">

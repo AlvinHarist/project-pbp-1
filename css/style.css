@@ -91,6 +91,14 @@ nav ul li a:hover {
     color: var(--accent-color);
 }
 
+<<<<<<< HEAD
+.search-box input {
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 10px 15px 10px 40px;
+    width: 250px;
+    font-family: var(--font-family);
+=======
 .search-box {
     display: inline-flex;
     align-items: center;
@@ -132,6 +140,7 @@ nav ul li a:hover {
     clip: rect(0,0,0,0);
     white-space: nowrap;
     border: 0;
+>>>>>>> e59ae3193bcbaf527cf1fd8d67cb8a63a37298c6
 }
 
 .icons a {
@@ -388,9 +397,12 @@ nav ul li a:hover {
     transition: box-shadow 0.3s, transform 0.3s;
     display: flex;
     flex-direction: column;
+<<<<<<< HEAD
+=======
     background: var(--white);
     color: var(--text-color);
     box-shadow: 0 6px 18px rgba(11,19,28,0.04);
+>>>>>>> e59ae3193bcbaf527cf1fd8d67cb8a63a37298c6
 }
 
 .book-card:hover {
@@ -550,6 +562,9 @@ footer {
     color: var(--secondary-color);
     margin-bottom: 30px;
 }
+<<<<<<< HEAD
+
+=======
 /* Atur posisi ikon */
 /* .input-group .input-icon {
     position: absolute;
@@ -559,6 +574,7 @@ footer {
     color: #6c757d; /* warna ikon 
     font-size: 18px;
 } */
+>>>>>>> e59ae3193bcbaf527cf1fd8d67cb8a63a37298c6
 .input-group {
     margin-bottom: 20px;
     position: relative;
@@ -573,6 +589,13 @@ footer {
 .input-group .input-icon {
     position: absolute;
     left: 15px;
+<<<<<<< HEAD
+    top: 45px;
+    color: var(--accent-color);
+}
+
+.input-group input[type="text"],
+=======
     /* top: 45px; */
     top: 50%;
     transform: translateY(-50%);
@@ -589,6 +612,7 @@ footer {
 }
 
 .input-group textarea,
+>>>>>>> e59ae3193bcbaf527cf1fd8d67cb8a63a37298c6
 .input-group input[type="email"],
 .input-group input[type="password"] {
     width: 100%;
@@ -673,5 +697,9 @@ footer {
     border-color: #badbcc;
     color: #0f5132;
     text-align: center;
+<<<<<<< HEAD
+}
+=======
 }
 
+>>>>>>> e59ae3193bcbaf527cf1fd8d67cb8a63a37298c6

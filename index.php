@@ -7,8 +7,6 @@ $sql = "SELECT * FROM buku ORDER BY Tanggal_Masuk DESC LIMIT 5";
 $result = $conn->query($sql);
 ?>
 
-
-
 <section class="hero">
     <div class="container">
         <div class="hero-content">
@@ -90,7 +88,7 @@ $result = $conn->query($sql);
         </div>
     </div>
 </section>
-
+<section class="featured-books">
 <div class="featured-books">
     <div class="container">
         <div class="section-header">
@@ -98,7 +96,96 @@ $result = $conn->query($sql);
             <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="books-grid">
-
+            <div class="book-card">
+                <div class="book-image-container">
+                    <img src="images/hp.jpeg" alt="Harry Potter and the Sorcerer's Stone">
+                    <span class="bestseller-tag">Bestseller</span>
+                </div>
+                <div class="book-info">
+                    <p class="book-category">Fiction</p>
+                    <h3>Harry Potter and the Sorcerer's Stone</h3>
+                    <p class="book-author">JK Rowling</p>
+                    <div class="book-rating">
+                        <i class="fas fa-star"></i> 4.8 (2155)
+                    </div>
+                    <div class="book-footer">
+                         <p class="book-price">Rp160.000 <span class="old-price">Rp180.000</span></p>
+                         <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add</button>
+                    </div>
+                </div>
+            </div>
+            <div class="book-card">
+                 <div class="book-image-container">
+                    <img src="images/atomic-habits.jpeg" alt="Atomic Habits">
+                    <span class="bestseller-tag">Bestseller</span>
+                </div>
+                <div class="book-info">
+                    <p class="book-category">Self-Help</p>
+                    <h3>Atomic Habits</h3>
+                    <p class="book-author">by James Clear</p>
+                    <div class="book-rating">
+                        <i class="fas fa-star"></i> 4.7 (3421)
+                    </div>
+                    <div class="book-footer">
+                         <p class="book-price">Rp90.000</p>
+                         <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add</button>
+                    </div>
+                </div>
+            </div>
+            <div class="book-card">
+                 <div class="book-image-container">
+                    <img src="images/homl.jpeg" alt="Hands On Machine Learning with Scikit-Learn, Keras & Tensorflow">
+                </div>
+                <div class="book-info">
+                    <p class="book-category">Science</p>
+                    <h3>Hands On Machine Learning with Scikit-Learn, Keras & Tensorflow</h3>
+                    <p class="book-author">by Aurélien Géron</p>
+                    <div class="book-rating">
+                        <i class="fas fa-star"></i> 4.5 (1876)
+                    </div>
+                    <div class="book-footer">
+                         <p class="book-price">Rp200.000</p>
+                         <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add</button>
+                    </div>
+                </div>
+            </div>
+            <div class="book-card">
+                 <div class="book-image-container">
+                    <img src="images/start-with-why.jpg" alt="Start With Why">
+                </div>
+                <div class="book-info">
+                    <p class="book-category">Self-Help</p>
+                    <h3>Educated</h3>
+                    <p class="book-author">by Simon Sinek</p>
+                    <div class="book-rating">
+                        <i class="fas fa-star"></i> 4.6 (2987)
+                    </div>
+                    <div class="book-footer">
+                         <p class="book-price">Rp80.000 <span class="old-price">Rp95.000</span></p>
+                         <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add</button>
+                    </div>
+                </div>
+            </div>
+             <div class="book-card">
+                 <div class="book-image-container">
+                    <img src="images/bumi.jpg" alt="Bumi">
+                </div>
+                <div class="book-info">
+                    <p class="book-category">Sci-Fi</p>
+                    <h3>Bumi</h3>
+                    <p class="book-author">by Tere Liye</p>
+                    <div class="book-rating">
+                        <i class="fas fa-star"></i> 4.4 (4532)
+                    </div>
+                    <div class="book-footer">
+                         <p class="book-price">Rp92.000</p>
+                         <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
             <?php
             // Query untuk mengambil 5 buku terbaru
             $sql = "SELECT * FROM buku ORDER BY Tanggal_Masuk DESC LIMIT 5";
@@ -150,6 +237,4 @@ $result = $conn->query($sql);
         </div>
     </div>
 </div>
-
-
 <?php include 'includes/footer.php'; ?>
