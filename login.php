@@ -1,34 +1,52 @@
-<?php include "includes/header.php"; ?>
-
 <?php
 // login.php
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 include "config.php";
+include 'includes/header.php';
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST["email"];
-    $password = $_POST["password"];
+  $email = $_POST["email"] ?? '';
+  $password = $_POST["password"] ?? '';
 
-    $sql = "SELECT * FROM user WHERE Email='$email' AND Password='$password'";
-    $result = mysqli_query($conn, $sql);
-
-    if (mysqli_num_rows($result) == 1) {
-        $user = mysqli_fetch_assoc($result);
-
-        $_SESSION['user'] = $user; // simpan semua data user di session
-        // echo "Role kamu adalah: " . $_SESSION['user']['Role'];
-
-        // cek role
-        if ($user['Role'] === 'Admin') {
-          
-          header("Location: dashboardAdmin.php");
-        } else {
-          header("Location: dashboardPembeli.php");
-        }
-        exit;
-    } else {
-        $error = "Email atau password salah!";
+  $stmt = $conn->prepare('SELECT * FROM user WHERE Email = ? LIMIT 1');
+  $stmt->bind_param('s', $email);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  if ($res && $res->num_rows === 1) {
+    $user = $res->fetch_assoc();
+    $stored = $user['Password'] ?? '';
+    $ok = false;
+    if (!empty($stored) && password_verify($password, $stored)) {
+      $ok = true;
+    } elseif ($stored === $password) {
+      // legacy plaintext match
+      $ok = true;
+      // optionally rehash and update DB
+      $newHash = password_hash($password, PASSWORD_DEFAULT);
+      $ustmt = $conn->prepare('UPDATE user SET Password = ? WHERE id = ?');
+      $ustmt->bind_param('ss', $newHash, $user['id']);
+      $ustmt->execute();
+      $ustmt->close();
     }
+
+    if ($ok) {
+      // remove password before storing in session
+      unset($user['Password']);
+      $_SESSION['user'] = $user;
+      if (($user['Role'] ?? '') === 'Admin') {
+        header("Location: dashboardAdmin.php");
+      } else {
+        header("Location: DashboardPembeli.php");
+      }
+      exit;
+    } else {
+      $error = "Email atau password salah!";
+    }
+  } else {
+    $error = "Email atau password salah!";
+  }
+  $stmt->close();
 }
 ?>
 <!DOCTYPE html>
