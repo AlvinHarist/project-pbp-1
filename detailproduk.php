@@ -1,24 +1,80 @@
-<?php include 'includes/header.php'; ?>
-<link rel="stylesheet" href="css/style.css"> <!-- umum -->
-<link rel="stylesheet" href="css/detailproduk.css">
-<?php include "config.php"; ?>
-<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 <?php
+session_start();
+require_once __DIR__ . '/config.php';
+
+$response = '';
+$errors = [];
+
 $id = isset($_GET['id']) ? $_GET['id'] : '';
 
-$sql = "SELECT * FROM buku WHERE id = '$id'";
-$result = $conn->query($sql);
+// Handle add-to-cart posted to this page
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['action']) && $_POST['action'] === 'add')) {
+    if (empty($_SESSION['user'])) {
+        header('Location: login.php');
+        exit;
+    }
+    $userId = $_SESSION['user']['id'];
+    $id_buku = $_POST['id_buku'] ?? '';
+    $jumlah = isset($_POST['jumlah']) ? intval($_POST['jumlah']) : 1;
+    if ($id_buku === '') $errors[] = 'ID buku tidak valid.';
+    if ($jumlah < 1) $errors[] = 'Jumlah minimal 1.';
+    if (empty($errors)) {
+        $stmt = $conn->prepare('SELECT Jumlah FROM wishlist WHERE id_buku = ? AND id_user = ? LIMIT 1');
+        $stmt->bind_param('ss', $id_buku, $userId);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        if ($res && $res->num_rows > 0) {
+            $row = $res->fetch_assoc();
+            $newJumlah = $row['Jumlah'] + $jumlah;
+            $stmt2 = $conn->prepare('UPDATE wishlist SET Jumlah = ? WHERE id_buku = ? AND id_user = ?');
+            $stmt2->bind_param('iss', $newJumlah, $id_buku, $userId);
+            $stmt2->execute();
+            $stmt2->close();
+        } else {
+            $stmt2 = $conn->prepare('INSERT INTO wishlist (Jumlah, id_buku, id_user) VALUES (?, ?, ?)');
+            $stmt2->bind_param('iss', $jumlah, $id_buku, $userId);
+            $stmt2->execute();
+            $stmt2->close();
+        }
+        $stmt->close();
+        $response = 'Berhasil menambahkan ke keranjang.';
+    }
+}
 
-// Query review
-$sql_review = "SELECT * FROM review WHERE ID_Buku = '$id'";
-$result_review = $conn->query($sql_review);
+include 'includes/header.php';
+?>
+<link rel="stylesheet" href="css/style.css"> <!-- umum -->
+<link rel="stylesheet" href="css/detailproduk.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<?php
 
-if ($result->num_rows > 0) {
-    $buku = $result->fetch_assoc();
-} else {
+// fetch buku securely
+$buku = null;
+if ($id !== '') {
+    $stmt = $conn->prepare('SELECT * FROM buku WHERE id = ? LIMIT 1');
+    $stmt->bind_param('s', $id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($res && $res->num_rows > 0) {
+        $buku = $res->fetch_assoc();
+    }
+    $stmt->close();
+}
+
+if (!$buku) {
     echo "Buku tidak ditemukan!";
+    include 'includes/footer.php';
     exit;
 }
+
+// fetch reviews
+$result_review = null;
+$stmt_r = $conn->prepare('SELECT * FROM review WHERE ID_Buku = ? ORDER BY Tanggal DESC');
+$stmt_r->bind_param('s', $id);
+$stmt_r->execute();
+$result_review = $stmt_r->get_result();
+$stmt_r->close();
+
 ?>
 
 <main class="book-detail">
@@ -42,7 +98,11 @@ if ($result->num_rows > 0) {
                 </div>
 
                 <div class="detail-buttons">
-                    <button class="btn-add-cart"><i class="fas fa-shopping-cart"></i> Tambah ke Keranjang</button>
+                    <form method="post" action="keranjang.php?action=add" style="display:inline-flex; align-items:center; gap:8px;">
+                        <input type="hidden" name="id_buku" value="<?php echo htmlspecialchars($buku['id']); ?>">
+                        <input type="number" name="jumlah" value="1" min="1" style="width:80px; padding:6px; border-radius:6px; border:1px solid var(--border-color)">
+                        <button type="submit" class="btn-add-cart"><i class="fas fa-shopping-cart"></i> Tambah ke Keranjang</button>
+                    </form>
                     <button class="btn-buy-now">Beli Sekarang</button>
                 </div>
             </div>
