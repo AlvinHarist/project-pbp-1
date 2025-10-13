@@ -1,5 +1,8 @@
-<?php include "config.php"?>
-<?php include 'includes/header2.php'; ?>
+<?php
+if (session_status() === PHP_SESSION_NONE) session_start();
+include "config.php";
+include 'includes/header2.php';
+?>
 
 <?php
 // Fungsi ambil buku teratas
@@ -21,14 +24,18 @@ $topBooks = getTopBooks($conn, 4);
 
 // Fungsi ambil rating buku
 function getBookRating($conn, $idBuku) {
-    $sql = "SELECT AVG(Rating) AS avgRating, COUNT(*) AS totalReview 
-            FROM review 
-            WHERE ID_Buku = '$idBuku'";
-    $result = $conn->query($sql);
-    $data = $result->fetch_assoc();
+    $sql = "SELECT AVG(Rating) AS avgRating, COUNT(*) AS totalReview FROM review WHERE ID_Buku = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('s', $idBuku);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $data = $res->fetch_assoc();
+    $stmt->close();
+    $avg = $data['avgRating'];
+    if (is_null($avg)) $avg = 0;
     return [
-        'avgRating' => round($data['avgRating'], 1), 
-        'totalReview' => $data['totalReview']
+        'avgRating' => round(floatval($avg), 1),
+        'totalReview' => intval($data['totalReview'])
     ];
 }
 $sqlKategori = "
@@ -198,9 +205,10 @@ $allCategories = [
     <div class="grid">
         <?php foreach($topBooks as $buku): ?>
             <?php $rating = getBookRating($conn, $buku['id']); ?>
-            <div class="book-card">
+            <a class="book-card-link" href="detailproduk.php?id=<?php echo urlencode($buku['id']); ?>">
+            <div class="book-card" data-id="<?php echo htmlspecialchars($buku['id']); ?>">
                 <div class="book-image-container">
-                    <img src="images/<?php echo $buku['id']; ?>.jpg" alt="<?php echo $buku['Judul']; ?>">
+                    <img src="images/<?php echo $buku['id']; ?>.jpg" alt="<?php echo $buku['Judul']; ?>" loading="lazy">
                 </div>
                 <div class="book-info">
                     <h3><?php echo $buku['Judul']; ?></h3>
@@ -212,6 +220,7 @@ $allCategories = [
                     <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Tambah</button>
                 </div>
             </div>
+            </a>
         <?php endforeach; ?>
 
     </div>
