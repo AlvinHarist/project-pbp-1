@@ -25,7 +25,7 @@
             <h2>Admin</h2>
         </div>
         <div class="icons">
-            <a href="#"><i class="fas fa-user" style="color: #1B263B";></i></a>
+            <a href="profile.php"><i class="fas fa-user" style="color: #1B263B";></i></a>
         </div>
     </div>
 </header>

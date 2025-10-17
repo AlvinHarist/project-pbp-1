@@ -34,7 +34,7 @@
                     <a href="#"><i class="fas fa-heart"></i></a>
                     <a href="keranjang.php"><i class="fas fa-shopping-cart"></i></a>
                     <?php if (!empty($_SESSION['user'])): ?>
-                        <a href="DashboardPembeli.php"><i class="fas fa-user"></i></a>
+                        <a href="profile.php"><i class="fas fa-user"></i></a>
                         <a href="logout.php" class='masuk-icon'>Keluar</a>
                     <?php else: ?>
                         <a href="login.php" class='masuk-icon'>Masuk</a>

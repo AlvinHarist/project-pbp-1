@@ -139,6 +139,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <i class="fas fa-location-dot input-icon"></i>
                 <input type="text" id="alamat" name="alamat" placeholder="contoh: Jl. Melati No. 7, Kecamatan X, Kota Y" required value="<?= htmlspecialchars($_POST['alamat'] ?? '') ?>">
             </div>
+            
+            <div class="input-group">
+                <label for="Nomor_telepon">Nomor Telepon</label>
+                <i class="fas fa-phone input-icon"></i>
+                <input type="text" id="Nomor_telepon" name="Nomor_telepon" placeholder="contoh: 081234567890" required value="<?= htmlspecialchars($_POST['Nomor_telepon'] ?? '') ?>">
+            </div>
 
             <div class="input-group">
                 <label for="password">Password</label>
