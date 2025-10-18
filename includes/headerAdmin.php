@@ -15,17 +15,20 @@
 <header>
     <div class="container">
         <nav>
-            <a href="http://localhost/Book-Store/index.php" class="logo">BukaBuku</a>
+            <a href="index.php" class="logo">BukaBuku</a>
             <ul>
-                <li><a href="#" class="menu-produk">Manajemen Produk</a></li>
-                <li><a href="#" class="menu-pesanan">Manajemen Pesanan</a></li>
+                <li><a href="manajemenProduk.php" class="menu-produk">Manajemen Produk</a></li>
+                <li><a href="manajemenPesanan.php" class="menu-pesanan">Manajemen Pesanan</a></li>
             </ul>
         </nav>
         <div class="admin">
             <h2>Admin</h2>
         </div>
+         <div class="logout-link">
+            <a href="logout.php" class="keluar">Keluar</a>
+        </div>
         <div class="icons">
-            <a href="#"><i class="fas fa-user" style="color: #1B263B";></i></a>
+            <a href="profile.php"><i class="fas fa-user" style="color: #1B263B";></i></a>
         </div>
     </div>
 </header>

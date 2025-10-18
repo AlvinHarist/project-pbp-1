@@ -1,5 +1,6 @@
 <?php
 include 'config.php';
+include 'includes/headerAdmin.php'; 
 
 // Ganti dengan detail koneksi database Anda
 $servername = "localhost";
@@ -34,7 +35,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id']))
     } else {
         // Handle error
         $error_message = "Error menghapus data: " . $conn->error;
-        // Anda bisa tambahkan handling error di sini
     }
 }
 // --- AKHIR LOGIKA HAPUS DATA ---
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     $stmt_check = $conn->prepare($check_sql);
     
     if (!$stmt_check) {
-        // Penanganan jika prepare gagal (misal query salah)
+        // Penanganan jika prepare gagal 
         header("Location: manajemenProduk.php?status=error&message=Gagal menyiapkan check duplikat: " . urlencode($conn->error));
         exit();
     }
@@ -64,7 +64,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     $stmt_check->store_result();
 
     if ($stmt_check->num_rows > 0) {
-        // Data duplikat ditemukan, kembalikan pesan error
         header("Location: manajemenProduk.php?status=error&message=Gagal: Buku dengan Judul dan Penulis yang sama sudah ada di katalog.");
         $stmt_check->close();
         exit();
@@ -202,11 +201,6 @@ if ($result->num_rows > 0) {
 
 $total_products = count($products);
 
-// Jangan close koneksi di sini, kita akan close di akhir file.
-
-/**
- * Fungsi pembantu untuk menentukan URL gambar (tetap dipertahankan)
- */
 function get_image_url($book_id, $folder, $fallback) {
     $extensions = ['jpg', 'png', 'jpeg'];
     $book_id = htmlspecialchars($book_id);
@@ -237,7 +231,7 @@ function get_image_url($book_id, $folder, $fallback) {
 
     <link rel="stylesheet" href="css/manajemenProduk.css"> 
 </head>
-<body>
+<body> <!--
     <div class="mp-container">
         <div class="mp-header">
             <div class="mp-avatar-container">
@@ -255,7 +249,7 @@ function get_image_url($book_id, $folder, $fallback) {
                 <svg class="mp-icon-sm" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
                 Kembali ke Dashboard
             </a>
-        </div>
+        </div>-->
         
         <div class="mp-main-content-wrapper">
             <div class="mp-hero-section">

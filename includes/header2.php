@@ -63,7 +63,7 @@ if (!empty($_SESSION['user']['id']) && isset($conn)) {
                         <?php endif; ?>
                     </a>
                     <?php if (!empty($_SESSION['user'])): ?>
-                        <a href="DashboardPembeli.php"><i class="fas fa-user"></i></a>
+                        <a href="profile.php"><i class="fas fa-user"></i></a>
                         <a href="logout.php" class="masuk-icon">Keluar</a>
                     <?php else: ?>
                         <a href="login.php" class="masuk-icon">Masuk</a>

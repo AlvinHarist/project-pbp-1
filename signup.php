@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fullname = trim($_POST['fullname']);
     $email = trim($_POST['email']);
     $alamat = trim($_POST['alamat']);
-    $nomor_telepon = trim($_POST['nomor_telepon']);
+    $Nomor_telepon = trim($_POST['Nomor_telepon']);
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
 
@@ -37,9 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // 5. Validate Phone Number
-    if (empty($nomor_telepon)) {
+    if (empty($Nomor_telepon)) {
         $errors[] = "Nomor Telepon wajib diisi!";
-    } elseif (!preg_match('/^[0-9]{10,15}$/', $nomor_telepon)) {
+    } elseif (!preg_match('/^[0-9]{10,15}$/', $Nomor_telepon)) {
         $errors[] = "Nomor Telepon tidak valid.";
     }
 
@@ -80,8 +80,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Save the data into the database
     $id_user = uniqid("U");
 
-    // hash password
-    $hashed_password = md5($password);
+    // hash password securely
+    // Use password_hash for new registrations so we store modern hashes.
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     $stmt = $conn->prepare("INSERT INTO user (id, Nama, Email, alamat, Password, Role) VALUES (?, ?, ?, ?, ?, 'Pembeli')");
     $stmt->bind_param("sssss", $id_user, $fullname, $email, $alamat, $hashed_password);
@@ -150,6 +151,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <i class="fas fa-location-dot input-icon"></i>
                 <input type="text" id="alamat" name="alamat" placeholder="contoh: Jl. Melati No. 7, Kecamatan X, Kota Y" required value="<?= htmlspecialchars($_POST['alamat'] ?? '') ?>">
             </div>
+            
+            <div class="input-group">
+                <label for="Nomor_telepon">Nomor Telepon</label>
+                <i class="fas fa-phone input-icon"></i>
+                <input type="text" id="Nomor_telepon" name="Nomor_telepon" placeholder="contoh: 081234567890" required value="<?= htmlspecialchars($_POST['Nomor_telepon'] ?? '') ?>">
+            </div>
 
             <div class="input-group">
                 <label for="password">Password</label>
@@ -175,7 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
 
         <div class="auth-footer">
-            <p>Already have an account? <a href="#">Log In</a></p>
+            <p>Already have an account? <a href="login.php">Log In</a></p>
         </div>
     </div>
 </div>

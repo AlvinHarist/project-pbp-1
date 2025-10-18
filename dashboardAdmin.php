@@ -41,7 +41,7 @@ if ($_SESSION['user']['Role'] !== 'Admin') {
                 </div>
                 <div class="hero-buttons">
                     <a href="manajemenProduk.php" class="btn btn-primary">Manajemen Produk</a>
-                    <a href="#" class="btn btn-secondary">Manajemen Pesanan</a>
+                    <a href="manajemenPesanan.php" class="btn btn-secondary">Manajemen Pesanan</a>
                 </div>
                 <div class="hero-image">
                     <img src="images/keajaiban-toko-kelontong-namiya.jpg" alt="Beautiful library with many books" class="book1" >

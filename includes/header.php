@@ -4,11 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
- HEAD
     <title>BookHaven - Discover Your Next Great Read</title>
 
     <title>BukaBuku</title>
- e59ae3193bcbaf527cf1fd8d67cb8a63a37298c6
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,13 +17,11 @@
 
 <header>
     <div class="container">
-        <nav>
-            <a href="#" class="logo">BukaBuku</a>
             <a href="http://localhost/Book-Store/index.php" class="logo">BukaBuku</a>
             <ul>
                 <li><a href="#">Kategori</a></li>
                 <li><a href="#">Bestsellers</a></li>
-                <li><a href="#" class="active">Terbitan Baru</a></li>
+                <li><a href="#">Terbitan Baru</a></li>
                 <li><a href="#">About</a></li>
             </ul>
             <div class="nav-right">
@@ -44,7 +40,7 @@
                     <a href="#"><i class="fas fa-heart"></i></a>
                     <a href="keranjang.php"><i class="fas fa-shopping-cart"></i></a>
                     <?php if (!empty($_SESSION['user'])): ?>
-                        <a href="DashboardPembeli.php"><i class="fas fa-user"></i></a>
+                        <a href="profile.php"><i class="fas fa-user"></i></a>
                         <a href="logout.php" class='masuk-icon'>Keluar</a>
                     <?php else: ?>
                         <a href="login.php" class='masuk-icon'>Masuk</a>
@@ -52,8 +48,6 @@
                     <?php endif; ?>
                 </div>
             </div>
-        </nav>
     </div>
 </header>
-
 <main>
