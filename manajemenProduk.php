@@ -2,54 +2,44 @@
 include 'config.php';
 include 'includes/headerAdmin.php'; 
 
-// Ganti dengan detail koneksi database Anda
 $servername = "localhost";
-$username = "root"; // Sesuaikan jika berbeda
-$password = ""; // Sesuaikan jika berbeda
-$dbname = "toko_buku"; // Sesuai dengan nama database Anda
+$username = "root"; 
+$password = ""; 
+$dbname = "toko_buku"; 
 
 // 1. KONEKSI KE DATABASE
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Cek koneksi
 if ($conn->connect_error) {
-    // Tampilkan pesan error yang lebih aman (opsional)
     die("Koneksi ke database gagal.");
-    // Atau tampilkan detail error untuk development: die("Koneksi gagal: " . $conn->connect_error);
 }
 
 $edit_mode = false;
 $book_to_edit = null;
 
-// --- LOGIKA HAPUS DATA ---
+// LOGIKA HAPUS DATA 
 if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
     $book_id = $conn->real_escape_string($_GET['id']);
     
-    // Perintah DELETE SQL
     $delete_sql = "DELETE FROM buku WHERE id = '$book_id'";
     
     if ($conn->query($delete_sql) === TRUE) {
-        // Redirect kembali ke halaman ini dengan status sukses
         header("Location: manajemenProduk.php?status=deleted");
         exit();
     } else {
-        // Handle error
         $error_message = "Error menghapus data: " . $conn->error;
     }
 }
-// --- AKHIR LOGIKA HAPUS DATA ---
 
-// --- LOGIKA FORM INSERT DATA DENGAN VALIDASI DUPLIKAT DI PHP ---
+
+// LOGIKA FORM INSERT DATA DENGAN VALIDASI DUPLIKAT DI PHP
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'add_product') {
-    // 1. Ambil dan sanitasi data dari form
     $judul = trim($_POST['title']);
     $penulis = trim($_POST['author']);
     $harga = (float)$_POST['price'];
     $id_kategori = (int)$_POST['category'];
 
-    // 2. CEK DUPLIKASI BUKU DENGAN QUERY SELECT
-    // Memeriksa apakah kombinasi Judul dan Penulis sudah ada
     $check_sql = "SELECT id FROM buku WHERE Judul = ? AND Penulis = ?";
     $stmt_check = $conn->prepare($check_sql);
     
@@ -68,22 +58,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         $stmt_check->close();
         exit();
     }
-    $stmt_check->close(); // Tutup statement check
+    $stmt_check->close(); 
 
-    // 3. JIKA TIDAK DUPLIKAT, LANJUTKAN PROSES INSERT
     $id_buku = 'B' . uniqid(); 
     $penerbit = "Gramedia Pustaka Utama"; 
     $tahun = date("Y"); 
     $stok = 50; 
     
-    // 4. Query INSERT menggunakan Prepared Statement
     $insert_sql = "INSERT INTO buku (id, Judul, Penulis, Penerbit, Tahun, Harga, Stok, ID_Kategori) 
                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     
     $stmt_insert = $conn->prepare($insert_sql);
     
     if (!$stmt_insert) {
-        // Penanganan jika prepare insert gagal
         header("Location: manajemenProduk.php?status=error&message=Gagal menyiapkan insert data: " . urlencode($conn->error));
         exit();
     }
@@ -95,27 +82,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         $stmt_insert->close();
         exit();
     } else {
-        // Tangani error insert
         header("Location: manajemenProduk.php?status=error&message=Gagal menyimpan data: " . urlencode($stmt_insert->error));
         $stmt_insert->close();
         exit();
     }
 }
-// --- AKHIR LOGIKA FORM INSERT DATA DENGAN VALIDASI DUPLIKAT DI PHP ---
 
-// --- LOGIKA FORM UPDATE DATA ---
+
+// LOGIKA FORM UPDATE DATA 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'update_product') {
-    // 1. Ambil dan sanitasi data dari form
-    $book_id = $conn->real_escape_string($_POST['book_id']); // ID buku yang diedit
+    $book_id = $conn->real_escape_string($_POST['book_id']); 
     $judul = $conn->real_escape_string($_POST['title']);
     $penulis = $conn->real_escape_string($_POST['author']);
     $harga = (float)$_POST['price'];
     $id_kategori = (int)$_POST['category'];
-    //$edit_mode = false;
-    //$book_to_edit = null;
+   
 
-
-    // 2. Query UPDATE
+    // Query UPDATE
     $update_sql = "UPDATE buku SET 
                    Judul = '$judul', 
                    Penulis = '$penulis', 
@@ -130,9 +113,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         $error_message = "Error: " . $update_sql . "<br>" . $conn->error;
     }
 }
-// --- AKHIR LOGIKA FORM UPDATE DATA ---
 
-// --- LOGIKA AMBIL DATA BUKU YANG AKAN DIEDIT ---
+
+// LOGIKA AMBIL DATA BUKU YANG AKAN DIEDIT 
 if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])) {
     $edit_mode = true;
     $book_id_edit = $conn->real_escape_string($_GET['id']);
@@ -143,17 +126,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])) {
     if ($edit_result->num_rows == 1) {
         $book_to_edit = $edit_result->fetch_assoc();
     } else {
-        // Jika ID tidak ditemukan, kembali ke tampilan normal
         header("Location: manajemenProduk.php");
         exit();
     }
 }
-// --- AKHIR LOGIKA AMBIL DATA BUKU ---
 
 
-// --- LOGIKA QUERY DATA BUKU YANG AKAN DITAMPILKAN DI TABEL ---
+// LOGIKA QUERY DATA BUKU YANG AKAN DITAMPILKAN DI TABEL 
 
-// 1. Mengambil semua Kategori dari database (untuk dropdown form)
 $category_sql = "SELECT id, Nama_Kategori FROM kategori ORDER BY Nama_Kategori ASC";
 $category_result = $conn->query($category_sql);
 
@@ -164,11 +144,9 @@ if ($category_result->num_rows > 0) {
     }
 }
 
-// Definisikan path dan fallback image
 $cover_folder = "images/"; 
 $fallback_image = $cover_folder . "empty.png"; 
 
-// 2. Query untuk mengambil semua DATA BUKU (untuk tabel)
 $sql = "
     SELECT
         b.id,
@@ -201,11 +179,6 @@ if ($result->num_rows > 0) {
 
 $total_products = count($products);
 
-// Jangan close koneksi di sini, kita akan close di akhir file.
-
-/**
- * Fungsi pembantu untuk menentukan URL gambar (tetap dipertahankan)
- */
 function get_image_url($book_id, $folder, $fallback) {
     $extensions = ['jpg', 'png', 'jpeg'];
     $book_id = htmlspecialchars($book_id);
@@ -375,10 +348,8 @@ function get_image_url($book_id, $folder, $fallback) {
                                 $row_count = 0;
                                 foreach ($products as $product): 
                                     $row_count++;
-                                    // Tentukan class untuk ganjil/genap
                                     $row_class = ($row_count % 2 == 0) ? 'mp-table-row-even' : 'mp-table-row-odd';
 
-                                    // LOGIKA PENANGANAN GAMBAR
                                     $image_url = get_image_url($product['id'], $cover_folder, $fallback_image);
                                     
                                     // Format Rating dan Reviews
@@ -460,7 +431,6 @@ function get_image_url($book_id, $folder, $fallback) {
             toggleBtn.innerHTML = '<svg class="mp-icon-md" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Tambah Produk Baru';
             document.getElementById('form-title').textContent = 'Tambah Buku Baru';
             document.getElementById('submit-form-btn').textContent = 'Simpan Produk';
-            // Logic to clear form fields would go here in a real application
         });
     </script>
 </body>
