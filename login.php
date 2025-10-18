@@ -17,17 +17,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $res->fetch_assoc();
     $stored = $user['Password'] ?? '';
     $ok = false;
+    // Normal case: stored is a password_hash() value
     if (!empty($stored) && password_verify($password, $stored)) {
       $ok = true;
-    } elseif ($stored === $password) {
-      // legacy plaintext match
-      $ok = true;
-      // optionally rehash and update DB
-      $newHash = password_hash($password, PASSWORD_DEFAULT);
-      $ustmt = $conn->prepare('UPDATE user SET Password = ? WHERE id = ?');
-      $ustmt->bind_param('ss', $newHash, $user['id']);
-      $ustmt->execute();
-      $ustmt->close();
+    } else {
+      // Legacy cases: stored value might be MD5 hash or even plaintext
+      // If stored equals md5(entered password) or stored equals the plaintext password,
+      // accept and upgrade to a secure password_hash()
+      if (!empty($stored) && (md5($password) === $stored || $stored === $password)) {
+        $ok = true;
+        // Re-hash using password_hash and update DB
+        $newHash = password_hash($password, PASSWORD_DEFAULT);
+          // user id in this app appears to be a string (uniqid starting with 'U'),
+          // so bind as string. Also trim stored value to avoid whitespace mismatches.
+          $userid = isset($user['id']) ? $user['id'] : '';
+          $ustmt = $conn->prepare('UPDATE user SET Password = ? WHERE id = ?');
+          if ($ustmt) {
+            $ustmt->bind_param('ss', $newHash, $userid);
+          $ustmt->execute();
+          $ustmt->close();
+        }
+      }
     }
 
     if ($ok) {
