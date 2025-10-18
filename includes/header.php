@@ -16,7 +16,7 @@
 <header>
     <div class="container">
         <nav>
-            <a href="http://localhost/Book-Store/index.php" class="logo">BukaBuku</a>
+            <a href="index.php" class="logo">BukaBuku</a>
             <ul>
                 <li><a href="#">Kategori</a></li>
                 <li><a href="#">Bestsellers</a></li>
