@@ -21,7 +21,7 @@
                 <li><a href="#">Kategori</a></li>
                 <li><a href="#">Bestsellers</a></li>
                 <li><a href="terbitanBaru.php" class="active">Terbitan Baru</a></li>
-                <li><a href="#">About</a></li>
+                <li><a href="about.php">About</a></li>
             </ul>
             <div class="nav-right">
                 <form action="search.php" method="get" class="search-box" role="search">
