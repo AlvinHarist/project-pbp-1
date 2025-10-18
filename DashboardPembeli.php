@@ -140,7 +140,7 @@ $allCategories = [
                     <p>Toko buku pilihanmu! Jelajahi rak-rak buku terpopuler</p>
                     <div class="hero-buttons">
                         <a href="#" class="btn btn-primary">Jelajahi Koleksi</a>
-                        <a href="#" class="btn btn-secondary">Terbitan Terbaru</a>
+                        <a href="terbitanBaru.php" class="btn btn-secondary">Terbitan Terbaru</a>
                     </div>
                     <div class="stats">
                         <div><strong><?= number_format($totalBuku); ?></strong><span>Buku Tersedia</span></div>

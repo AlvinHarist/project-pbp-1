@@ -59,18 +59,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-  <!-- <header class="navbar">
-    <div class="logo">BukaBuku</div>
-    <nav>
-      <a href="#">Kategori</a>
-      <a href="#">Bestsellers</a>
-      <a href="#">Terbitan Baru</a>
-      <a href="#">About</a>
-    </nav>
-    <div class="search-bar">
-      <input type="text" placeholder="Cari buku, penulis, genre...">
-    </div>
-  </header>--> 
   
 
 
