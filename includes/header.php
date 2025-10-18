@@ -18,7 +18,7 @@
         <nav>
             <a href="http://localhost/Book-Store/index.php" class="logo">BukaBuku</a>
             <ul>
-                <li><a href="#">Kategori</a></li>
+                <li><a href="kategori.php">Kategori</a></li>
                 <li><a href="#">Bestsellers</a></li>
                 <li><a href="#" class="active">Terbitan Baru</a></li>
                 <li><a href="#">About</a></li>
