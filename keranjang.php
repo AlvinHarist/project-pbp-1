@@ -1,4 +1,4 @@
-// keranjang.php - cart page where checkout creates a pending order (Menunggu Pembayaran)
+<!-- // keranjang.php - cart page where checkout creates a pending order (Menunggu Pembayaran) -->
 <head>
     <link rel="stylesheet" href="keranjang.css">
 </head>
@@ -419,8 +419,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </td>
                                             <td>
                                                 <?php
-                                                // Ganti sesuai field gambar di database, misal 'Gambar'
-                                                $img = !empty($item['Gambar']) ? htmlspecialchars($item['Gambar']) : 'https://cdn-icons-png.flaticon.com/512/2038/2038854.png';
+                                                // If images/<id>.jpg or images/<id>.png exists, use that file.
+                                                // Otherwise fall back to images/empty.png
+                                                $img = 'images/empty.png';
+                                                $bookId = isset($item['id']) ? $item['id'] : '';
+                                                if ($item['id'] !== '') {
+                                                    $jpg = '/images/' . $bookId . '.jpg';
+                                                    $png = '/images/' . $bookId . '.png';
+                                                    if (file_exists($jpg)) {
+                                                        $img = 'images/' . rawurlencode($bookId) . '.jpg';
+                                                    } elseif (file_exists($png)) {
+                                                        $img = 'images/' . rawurlencode($bookId) . '.png';
+                                                    }
+                                                }
                                                 ?>
                                                 <img src="<?php echo $img; ?>" alt="cover">
                                             </td>
