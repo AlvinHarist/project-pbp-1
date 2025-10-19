@@ -1,0 +1,134 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+    height: 100%; /* wajib supaya flexbox bekerja */
+}
+
+body {
+    display: flex;
+    flex-direction: column; /* layout vertikal */
+}
+
+header {
+    background-color: #fff;
+    border-bottom: 1px solid #dee2e6;
+    padding: 15px 20px;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #1B263B;
+    text-decoration: none;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #62758e;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+header nav ul li a:hover,
+header nav ul li a.active {
+    color: #1B263B;
+}
+
+.about-section {
+    padding: 50px 10px; 
+    flex: 1; 
+}
+
+.about-section h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+
+.about-section h2 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #1B263B;
+}
+
+.about-section p, .about-section ul {
+    margin-left: 0; 
+    text-align: justify;
+    margin-bottom: 15px;
+}
+
+.about-section ul {
+    list-style-type: disc;
+    padding-left: 20px; 
+}
+
+footer {
+    background-color: #1B263B;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+
+
+.team-section {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.team-section h2 {
+    font-size: 32px;
+    margin-bottom: 40px;
+    color: #1B263B;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    justify-items: center;
+}
+
+.team-card {
+    background-color: #D5E8FF;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.team-card img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%; /* biar bulat */
+    margin-bottom: 15px;
+}
+
+.team-card p {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1B263B;
+    text-align: center;
+}

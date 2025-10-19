@@ -17,12 +17,13 @@
 
 <header>
     <div class="container">
-            <a href="http://localhost/Book-Store/index.php" class="logo">BukaBuku</a>
+        <nav>
+            <a href="index.php" class="logo">BukaBuku</a>
             <ul>
-                <li><a href="#">Kategori</a></li>
+                <li><a href="kategori.php">Kategori</a></li>
                 <li><a href="#">Bestsellers</a></li>
-                <li><a href="#">Terbitan Baru</a></li>
-                <li><a href="#">About</a></li>
+                <li><a href="terbitanBaru.php">Terbitan Baru</a></li>
+                <li><a href="about.php">About</a></li>
             </ul>
             <div class="nav-right">
                 <div class="search-box">

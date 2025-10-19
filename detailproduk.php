@@ -81,8 +81,22 @@ $stmt_r->close();
     <div class="container">
         <div class="detail-container">
             <div class="detail-left">
-            <img src="images/<?= $buku['id'] ?>.jpg" alt="<?= htmlspecialchars ($buku['Judul']) ?>">
-            </div>            <div class="detail-right">
+            <?php
+                $img = 'images/empty.png';
+                $bookId = $buku['id'] ?? '';
+                if ($bookId !== '') {
+                    $jpgPath = __DIR__ . '/images/' . $bookId . '.jpg';
+                    $pngPath = __DIR__ . '/images/' . $bookId . '.png';
+                    if (file_exists($jpgPath)) {
+                        $img = 'images/' . rawurlencode($bookId) . '.jpg';
+                    } elseif (file_exists($pngPath)) {
+                        $img = 'images/' . rawurlencode($bookId) . '.png';
+                    }
+                }
+            ?>
+            <img src="<?php echo $img; ?>" alt="<?php echo htmlspecialchars($buku['Judul']); ?>">
+            </div>
+            <div class="detail-right">
                 <h1 class="detail-title"><?php echo htmlspecialchars($buku['Judul']); ?></h1>
                 <p class="detail-author">Penulis: <?php echo htmlspecialchars($buku['Penulis']); ?></p>
                 <p class="detail-price">Rp <?php echo number_format($buku['Harga'], 0, ',', '.'); ?></p>
@@ -161,21 +175,7 @@ function decreaseQty() {
     }
 }
 
-/*function showTab(tabName) {
-    // Hide all tab contents
-    document.getElementById('description-content').style.display = 'none';
-    document.getElementById('review-content').style.display = 'none';
-    
-    // Remove active class from all tabs
-    let tabs = document.querySelectorAll('.tab');
-    tabs.forEach(tab => tab.classList.remove('active'));
-    
-    // Show selected tab content
-    document.getElementById(tabName + '-content').style.display = 'block';
-    
-    // Add active class to clicked tab
-    event.target.classList.add('active');
-}*/
+
 
 function showTab(e, tabName) {
     // Hide all tab contents

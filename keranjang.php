@@ -1,4 +1,4 @@
-// keranjang.php - cart page where checkout creates a pending order (Menunggu Pembayaran)
+<!-- // keranjang.php - cart page where checkout creates a pending order (Menunggu Pembayaran) -->
 <head>
     <link rel="stylesheet" href="keranjang.css">
 </head>
@@ -225,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         max-width: 1100px;
                     }
                     h2, h3 {
-                        color: #2e7d32;
+                        color: #041018ff;
                         margin-bottom: 18px;
                         padding-left: 10px;
                     }
@@ -244,8 +244,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         text-align: center;
                     }
                     .cart-table th {
-                        background: #e8f5e9;
-                        color: #388e3c;
+                        background: #3fb1fcff;
+                        color: #080808ff;
                         font-weight: 600;
                     }
                     .cart-table img {
@@ -270,11 +270,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         transition: border 0.2s;
                     }
                     input[type="number"]:focus {
-                        border: 1.5px solid #388e3c;
+                        border: 1.5px solid #3498db;
                         outline: none;
                     }
                     button {
-                        background: #388e3c;
+                        background: #3498db;
                         color: #fff;
                         border: none;
                         border-radius: 5px;
@@ -284,7 +284,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         transition: background 0.2s;
                     }
                     button:hover, button:focus {
-                        background: #2e7d32;
+                        background: #3498db;
                     }
                     textarea {
                         border: 1px solid #bdbdbd;
@@ -419,8 +419,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </td>
                                             <td>
                                                 <?php
-                                                // Ganti sesuai field gambar di database, misal 'Gambar'
-                                                $img = !empty($item['Gambar']) ? htmlspecialchars($item['Gambar']) : 'https://cdn-icons-png.flaticon.com/512/2038/2038854.png';
+                                                // If images/<id>.jpg or images/<id>.png exists, use that file.
+                                                // Otherwise fall back to images/empty.png
+                                                $img = 'images/empty.png';
+                                                $bookId = isset($item['id']) ? $item['id'] : '';
+                                                if ($item['id'] !== '') {
+                                                    $jpg = '/images/' . $bookId . '.jpg';
+                                                    $png = '/images/' . $bookId . '.png';
+                                                    if (file_exists($jpg)) {
+                                                        $img = 'images/' . rawurlencode($bookId) . '.jpg';
+                                                    } elseif (file_exists($png)) {
+                                                        $img = 'images/' . rawurlencode($bookId) . '.png';
+                                                    }
+                                                }
                                                 ?>
                                                 <img src="<?php echo $img; ?>" alt="cover">
                                             </td>
