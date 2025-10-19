@@ -23,7 +23,7 @@ $total_pelanggan = mysqli_fetch_assoc($total_pelanggan_result)['total_pelanggan'
 $total_penulis_result = mysqli_query($conn, "SELECT COUNT(DISTINCT Penulis) as total_penulis FROM buku");
 $total_penulis = mysqli_fetch_assoc($total_penulis_result)['total_penulis'];
 
-include 'includes/header.php';
+include 'includes/header2.php';
 
 
 ?>
