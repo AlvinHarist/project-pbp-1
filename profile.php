@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<?php include 'includes/header.php'; ?>
+<?php include 'includes/headerPembeli.php'; ?>
 
 <style>
 .profile-wrapper { max-width: 980px; margin: 32px auto; background:#fff; padding:24px; border-radius:10px; box-shadow:0 8px 30px rgba(0,0,0,0.04); }
