@@ -81,8 +81,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Use password_hash for new registrations so we store modern hashes.
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
-        $stmt = $conn->prepare("INSERT INTO user (id, Nama, Email, alamat, Password, Role) VALUES (?, ?, ?, ?, ?, 'Pembeli')");
-        $stmt->bind_param("sssss", $id_user, $fullname, $email, $alamat, $hashed_password);
+        $stmt = $conn->prepare("INSERT INTO user (id, Nama, Email, alamat, Nomor_telepon, Password, Role) VALUES (?, ?, ?, ?, ?, ?, 'Pembeli')");
+        $stmt->bind_param("ssssss", $id_user, $fullname, $email, $alamat, $Nomor_telepon, $hashed_password);
         $stmt->execute();
         // echo "Registrasi berhasil!";
     }
