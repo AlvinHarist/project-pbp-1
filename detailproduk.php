@@ -161,21 +161,7 @@ function decreaseQty() {
     }
 }
 
-/*function showTab(tabName) {
-    // Hide all tab contents
-    document.getElementById('description-content').style.display = 'none';
-    document.getElementById('review-content').style.display = 'none';
-    
-    // Remove active class from all tabs
-    let tabs = document.querySelectorAll('.tab');
-    tabs.forEach(tab => tab.classList.remove('active'));
-    
-    // Show selected tab content
-    document.getElementById(tabName + '-content').style.display = 'block';
-    
-    // Add active class to clicked tab
-    event.target.classList.add('active');
-}*/
+
 
 function showTab(e, tabName) {
     // Hide all tab contents

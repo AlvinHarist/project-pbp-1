@@ -151,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($msg)) {
         text-align: center;
     }
     .bayar-page th {
-        background-color: #2e7d32;
+        background-color: #3498db;
         color: #fff;
     }
     .bayar-page tfoot td {
@@ -175,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($msg)) {
         margin-bottom: 15px;
     }
     .bayar-page button {
-        background-color: #2e7d32;
+        background-color: #3498db;
         color: white;
         border: none;
         padding: 10px 18px;
@@ -185,14 +185,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($msg)) {
         transition: 0.3s;
     }
     .bayar-page button:hover {
-        background-color: #2e7d32;
+        background-color: #2980b9;
     }
     .bayar-page label {
         display: block;
         margin: 6px 0;
     }
     .bayar-page a {
-        color: #2e7d32;
+        color: #2980b9;
         text-decoration: none;
     }
     .bayar-page a:hover {

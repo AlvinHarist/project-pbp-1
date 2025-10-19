@@ -1,27 +1,20 @@
 /* Warna yang sering digunakan */
 :root {
-    --color-primary-dark: #1b263b; /* Biru tua */
-    --color-secondary-blue: #255376; /* Biru sedang */
-    --color-light-blue: #d5e8ff; /* Biru muda untuk latar form/header table */
-    --color-text-dark: #143950; /* Biru teks gelap */
-    --color-text-light: #496283; /* Biru teks sedang */
-    --color-border-gray: #778da9; /* Abu-abu biru untuk border */
-    --color-background-light: #f8fbff; /* Latar belakang baris ganjil */
-    --color-red: #f94144; /* Merah untuk hapus */
-    --color-red-hover: #d63437; /* Merah hover */
-    --color-blue-hover: #1b3f5a; /* Biru sedang hover */
-    --color-gray-hover: #5f6f85; /* Abu-abu biru hover */
-    --color-category-badge: #bde3ff; /* Latar badge kategori */
-    --color-text-author: #2d3e5f; /* Teks penulis/harga/rating */
+    --color-primary-dark: #1b263b; 
+    --color-secondary-blue: #255376; 
+    --color-light-blue: #d5e8ff; 
+    --color-text-dark: #143950; 
+    --color-text-light: #496283; 
+    --color-border-gray: #778da9; 
+    --color-background-light: #f8fbff; 
+    --color-red: #f94144; 
+    --color-red-hover: #d63437; 
+    --color-blue-hover: #1b3f5a; 
+    --color-gray-hover: #5f6f85; 
+    --color-category-badge: #bde3ff; 
+    --color-text-author: #2d3e5f; 
 }
 
-/* Font Faces dari file ManajemenProduk.tsx */
-/* Asumsi font-font ini sudah tersedia/diimpor di proyek Anda */
-/* .font-['Poppins:ExtraBold',_sans-serif] */
-/* .font-['Covered_By_Your_Grace:Regular',_sans-serif] */
-/* .font-['Sans_Serif_Collection:Regular',_sans-serif] */
-/* .font-['Poppins:Bold',_sans-serif] */
-/* .font-['Poppins:SemiBold',_sans-serif] */
 
 .mp-container {
     background-color: var(--color-primary-dark);
@@ -112,28 +105,26 @@
 }
 
 .mp-back-button:hover {
-    color: #255376; /* hover:text-[#255376] */
+    color: #255376; 
 }
 
 /* Ukuran Icon */
 .mp-icon-sm {
-    width: 20px; /* w-5 */
-    height: 20px; /* h-5 */
+    width: 20px; 
+    height: 20px; 
 }
 .mp-icon-md {
-    width: 24px; /* w-6 */
-    height: 24px; /* h-6 */
+    width: 24px; 
+    height: 24px; 
 }
 .mp-icon-xs {
-    width: 16px; /* w-4 */
-    height: 16px; /* h-4 */
+    width: 16px; 
+    height: 16px; 
 }
 
 /* --- Main Content Wrapper --- */
 .mp-main-content-wrapper {
     position: absolute;
-    /* backdrop-blur-[2px] backdrop-filter */
-    /* Untuk tampilan yang mirip, mungkin perlu menambahkan properti backdrop-filter di sini jika didukung */
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
     background-color: white;
@@ -147,8 +138,8 @@
 
 /* --- Hero Section --- */
 .mp-hero-section {
-    padding-top: 64px; /* pt-16 */
-    padding-inline: 135px; /* px-[135px] */
+    padding-top: 64px; 
+    padding-inline: 135px; 
 }
 
 .mp-hero-title {
@@ -162,7 +153,7 @@
 .mp-hero-subtitle {
     font-family: 'Poppins', sans-serif;
     line-height: normal;
-    margin-top: 8px; /* mt-2 */
+    margin-top: 8px; 
     font-style: normal;
     color: var(--color-text-light);
     font-size: 28px;
@@ -206,7 +197,7 @@
 .mp-form-card {
     background-color: var(--color-light-blue);
     border-radius: 25px;
-    padding: 32px; /* p-8 */
+    padding: 32px; 
     border: 1px solid var(--color-primary-dark);
 }
 
@@ -214,13 +205,13 @@
     font-family: 'Poppins:Bold', sans-serif;
     color: var(--color-text-dark);
     font-size: 30px;
-    margin-bottom: 24px; /* mb-6 */
+    margin-bottom: 24px; 
 }
 
 .mp-product-form {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px; /* gap-6 */
+    gap: 24px; 
 }
 
 .mp-form-label {
@@ -228,7 +219,7 @@
     font-family: 'Sans Serif Collection:Regular', sans-serif;
     color: var(--color-primary-dark);
     font-size: 18px;
-    margin-bottom: 8px; /* mb-2 */
+    margin-bottom: 8px; 
 }
 
 .mp-form-input {
@@ -238,7 +229,7 @@
     padding-inline: 16px; /* px-4 */
     border: 1px solid var(--color-border-gray);
     font-family: 'Sans Serif Collection:Regular', sans-serif;
-    background-color: white; /* Make sure inputs have white background */
+    background-color: white; 
     box-sizing: border-box;
     
 }
@@ -247,27 +238,23 @@
 
 /* Khusus untuk elemen SELECT */
 .mp-product-form select.mp-form-input {
-    /* Menghilangkan ikon panah default di beberapa browser */
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     
-    /* Menambahkan padding kanan agar tidak menimpa ikon kustom */
     padding-right: 40px; 
 
-    /* Tambahkan latar belakang ikon kustom */
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23778da9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>');
     
     background-repeat: no-repeat;
-    background-position: right 16px center; /* Posisi ikon 16px dari kanan */
-    background-size: 16px; /* Ukuran ikon */
-    
+    background-position: right 16px center; 
+    background-size: 16px; 
     cursor: pointer;
 }
 
 /* Gaya saat dropdown difokuskan */
 .mp-product-form select.mp-form-input:focus {
-    border-color: var(--color-secondary-blue); /* Contoh: Border berubah saat fokus */
+    border-color: var(--color-secondary-blue);
     outline: none;
 }
 
@@ -380,7 +367,7 @@
 
 .mp-product-table {
     width: 100%;
-    border-collapse: collapse; /* Ensure clean table borders */
+    border-collapse: collapse;
 }
 
 .mp-table-head-bg {
@@ -410,8 +397,7 @@
 }
 
 .mp-table-row-even:hover, .mp-table-row-odd:hover {
-    /* Menambah hover untuk feedback visual */
-    background-color: rgba(213, 232, 255, 0.5); /* Semi-transparan dari warna form */
+    background-color: rgba(213, 232, 255, 0.5); 
 }
 
 /* Table Data Cells */
@@ -461,7 +447,7 @@
     background-color: var(--color-category-badge);
     padding-inline: 16px; /* px-4 */
     padding-block: 4px; /* py-1 */
-    border-radius: 9999px; /* rounded-full */
+    border-radius: 9999px; 
     font-family: 'Sans Serif Collection:Regular', sans-serif;
     color: var(--color-text-dark);
     font-size: 14px;
