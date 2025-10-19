@@ -46,10 +46,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // 6. Validate Password
     if (empty($password)) {
         $errors[] = "Password is required.";
-    } elseif (strlen($password) < 8) {
-        $errors[] = "Password must be at least 8 characters long.";
     } elseif ($password !== $password_confirm) {
         $errors[] = "Passwords do not match.";
+    } else {
+        // complexity: min 8 chars, at least 1 letter, 1 number, 1 special char
+        if (strlen($password) < 8) {
+            $errors[] = "Password must be at least 8 characters long.";
+        }
+        if (!preg_match('/[A-Za-z]/', $password)) {
+            $errors[] = "Password must contain at least one letter.";
+        }
+        if (!preg_match('/[0-9]/', $password)) {
+            $errors[] = "Password must contain at least one number.";
+        }
+        if (!preg_match('/[\W_]/', $password)) {
+            $errors[] = "Password must contain at least one special character (e.g. !@#$%).";
+        }
     }
     
     // 5. Check Terms of Service
