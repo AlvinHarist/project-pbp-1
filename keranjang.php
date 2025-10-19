@@ -433,7 +433,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     }
                                                 }
                                                 ?>
-                                                <img src="<?php echo $img; ?>" alt="cover">
+
+                                                <?php
+                                                    $img = 'images/empty.png';
+                                                    // query returns ID_Buku, judul, penulis, harga_satuan, total_terjual
+                                                    $bookId = $item['id'] ?? '';
+                                                    // echo $bookId;
+                                                    if ($bookId !== '') {
+                                                        $jpgPath = 'images/' . $bookId . '.jpg';
+                                                        $pngPath = 'images/' . $bookId . '.png';
+                                                        if (file_exists($jpgPath)) {
+                                                            $img = 'images/' . rawurlencode($bookId) . '.jpg';
+                                                        } elseif (file_exists($pngPath)) {
+                                                            $img = 'images/' . rawurlencode($bookId) . '.png';
+                                                        }
+                                                        
+                                                    }
+                                                    $alt = !empty($item['judul']) ? $item['judul'] : 'Book';
+                                                ?>
+                                                <img src="<?php echo $img; ?>" alt="<?php echo htmlspecialchars($alt); ?>" class="book-image">
+                                                <!-- <img src="<?php echo $img; ?>" alt="cover"> -->
                                             </td>
                                             <td>Rp <?php echo number_format($item['Harga'],0,',','.'); ?></td>
                                             <td style="width:120px"><input type="number" name="qty[<?php echo (int)$item['id']; ?>]" value="<?php echo (int)$item['Jumlah']; ?>" min="0"></td>
@@ -528,4 +547,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         recalc();
                     });
                     </script>
-            const stock = parseInt(row.dataset.stock) || 0;
+            <!-- const stock = parseInt(row.dataset.stock) || 0; -->
