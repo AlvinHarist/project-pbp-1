@@ -52,7 +52,7 @@ if ($stmt = $conn->prepare($sql)) {
                                 <img src="<?php echo $imgPath; ?>" alt="<?php echo htmlspecialchars($row['Judul']); ?>">
                             </div>
                             <div class="book-info">
-                                <p class="category">Rp <?php echo number_format($row['Harga'], 0, ',', '.'); ?></p>
+                                <!-- <p class="category">Rp <?php echo number_format($row['Harga'], 0, ',', '.'); ?></p> -->
                                 <h3><?php echo htmlspecialchars($row['Judul']); ?></h3>
                                 <p>by <?php echo htmlspecialchars($row['Penulis']); ?></p>
                             </div>
