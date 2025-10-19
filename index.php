@@ -134,7 +134,11 @@ $result = $conn->query($sql);
                     </a>
                     <div class="book-footer">
                         <p class="book-price">Rp <?php echo number_format($row['Harga'], 0, ',', '.'); ?></p>
-                        <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add</button>
+                        <form method="post" action="keranjang.php?action=add" style="display:inline-block; margin:0;">
+                            <input type="hidden" name="id_buku" value="<?php echo htmlspecialchars($row['id']); ?>">
+                            <input type="hidden" name="jumlah" value="1">
+                            <button type="submit" class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add</button>
+                        </form>
 
 
                     </div>

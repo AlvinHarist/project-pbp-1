@@ -205,22 +205,28 @@ $allCategories = [
     <div class="grid">
         <?php foreach($topBooks as $buku): ?>
             <?php $rating = getBookRating($conn, $buku['id']); ?>
-            <a class="book-card-link" href="detailproduk.php?id=<?php echo urlencode($buku['id']); ?>">
             <div class="book-card" data-id="<?php echo htmlspecialchars($buku['id']); ?>">
-                <div class="book-image-container">
-                    <img src="images/<?php echo $buku['id']; ?>.jpg" alt="<?php echo $buku['Judul']; ?>" loading="lazy">
-                </div>
-                <div class="book-info">
-                    <h3><?php echo $buku['Judul']; ?></h3>
-                    <p>by <?php echo $buku['Penulis']; ?></p>
-                    <p class="book-price">Rp <?= number_format($buku['Harga'], 0, ',', '.') ?></p>
-                    <div class="book-rating">
-                        <i class="fas fa-star"></i> <?= $rating['avgRating']; ?> (<?= $rating['totalReview']; ?>)
+                <a class="book-card-link" href="detailproduk.php?id=<?php echo urlencode($buku['id']); ?>">
+                    <div class="book-image-container">
+                        <img src="images/<?php echo $buku['id']; ?>.jpg" alt="<?php echo $buku['Judul']; ?>" loading="lazy">
                     </div>
-                    <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Tambah</button>
+                    <div class="book-info">
+                        <h3><?php echo $buku['Judul']; ?></h3>
+                        <p>by <?php echo $buku['Penulis']; ?></p>
+                        <p class="book-price">Rp <?= number_format($buku['Harga'], 0, ',', '.') ?></p>
+                        <div class="book-rating">
+                            <i class="fas fa-star"></i> <?= $rating['avgRating']; ?> (<?= $rating['totalReview']; ?>)
+                        </div>
+                    </div>
+                </a>
+                <div class="book-footer" style="padding:8px 12px; display:flex; justify-content:center; gap:8px;">
+                    <form method="post" action="keranjang.php?action=add" style="margin:0;">
+                        <input type="hidden" name="id_buku" value="<?php echo htmlspecialchars($buku['id']); ?>">
+                        <input type="hidden" name="jumlah" value="1">
+                        <button type="submit" class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Tambah</button>
+                    </form>
                 </div>
             </div>
-            </a>
         <?php endforeach; ?>
 
     </div>

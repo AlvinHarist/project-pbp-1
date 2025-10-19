@@ -106,7 +106,7 @@ $stmt_r->close();
                     <label for="qty">Jumlah:</label>
                     <div class="quantity-controls">
                         <button class="quantity-btn minus" onclick="decreaseQty()">-</button>
-                        <input type="number" id="qty" name="qty" value="1" min="1" max="<?php echo $buku['Stok']; ?>" class="quantity-input">
+                        <input type="number" id="qty" name="jumlah" value="1" min="1" max="<?php echo $buku['Stok']; ?>" class="quantity-input">
                         <button class="quantity-btn plus" onclick="increaseQty()">+</button>
                     </div>
                 </div>
@@ -114,7 +114,7 @@ $stmt_r->close();
                 <div class="detail-buttons">
                     <form method="post" action="keranjang.php?action=add" style="display:inline-flex; align-items:center; gap:8px;">
                         <input type="hidden" name="id_buku" value="<?php echo htmlspecialchars($buku['id']); ?>">
-                        <input type="number" name="jumlah" value="1" min="1" style="width:80px; padding:6px; border-radius:6px; border:1px solid var(--border-color)">
+                        <!-- jumlah will be taken from the quantity input with id="qty" (name="jumlah") -->
                         <button type="submit" class="btn-add-cart"><i class="fas fa-shopping-cart"></i> Tambah ke Keranjang</button>
                     </form>
                     <button class="btn-buy-now">Beli Sekarang</button>
@@ -193,6 +193,36 @@ function showTab(e, tabName) {
     e.target.classList.add('active');
 }
 
+</script>
+
+<script>
+// ensure qty value is submitted even though the visible input is outside the form
+document.addEventListener('DOMContentLoaded', function(){
+    var qtyInput = document.getElementById('qty');
+    // find the add-to-cart form for this page
+    var addForm = document.querySelector('form[action="keranjang.php?action=add"]');
+    if (!qtyInput || !addForm) return;
+
+    addForm.addEventListener('submit', function(e){
+        // sanitize and clamp
+        var min = parseInt(qtyInput.getAttribute('min')) || 1;
+        var max = parseInt(qtyInput.getAttribute('max')) || Infinity;
+        var val = parseInt(qtyInput.value) || min;
+        if (val < min) val = min;
+        if (val > max) val = max;
+        qtyInput.value = val;
+
+        // find or create hidden input named 'jumlah'
+        var hidden = addForm.querySelector('input[type="hidden"][name="jumlah"]');
+        if (!hidden) {
+            hidden = document.createElement('input');
+            hidden.type = 'hidden';
+            hidden.name = 'jumlah';
+            addForm.appendChild(hidden);
+        }
+        hidden.value = val;
+    });
+});
 </script>
 
 <?php include 'includes/footer.php'; ?>
