@@ -1,11 +1,11 @@
 <?php include "config.php";
-include "includes/header2.php";
+include "includes/headerPembeli.php";
 
 $books = [];
 $query = "SELECT dt.ID_Buku, b.judul, b.penulis, dt.harga_satuan, SUM(dt.Jumlah) AS total_terjual
           FROM detail_transaksi dt
           JOIN buku b ON dt.ID_Buku COLLATE utf8mb4_unicode_ci = b.ID COLLATE utf8mb4_unicode_ci
-          GROUP BY dt.ID_Buku, b.judul, dt.harga_satuan
+          GROUP BY dt.ID_Buku, b.judul, b.penulis, dt.harga_satuan
           ORDER BY total_terjual DESC
           LIMIT 10";
 

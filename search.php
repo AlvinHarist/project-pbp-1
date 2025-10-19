@@ -1,5 +1,5 @@
 <?php
-include 'includes/header.php';
+include 'includes/header2.php';
 include 'config.php';
 
 $q = isset($_GET['q']) ? trim($_GET['q']) : '';

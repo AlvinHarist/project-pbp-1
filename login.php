@@ -2,7 +2,7 @@
 // login.php
 if (session_status() === PHP_SESSION_NONE) session_start();
 include "config.php";
-include 'includes/header.php';
+include 'includes/header2.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

@@ -209,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     // render page
                     ?>
-                    <?php include 'includes/header.php'; ?>
+                    <?php include 'includes/header2.php'; ?>
                     <style>
                     body {
                         background: #f6f8fa;

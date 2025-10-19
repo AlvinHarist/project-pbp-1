@@ -42,7 +42,7 @@ if (!empty($_SESSION['user']['id']) && isset($conn)) {
         <nav>
             <a href="index.php" class="logo">BukaBuku</a>
             <ul>
-                <li><a href="#">Kategori</a></li>
+                <li><a href="kategori.php">Kategori</a></li>
                 <li><a href="#">Bestsellers</a></li>
                 <li><a href="terbitanBaru.php">Terbitan Baru</a></li>
                 <li><a href="about.php">About</a></li>
