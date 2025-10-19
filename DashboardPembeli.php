@@ -200,7 +200,7 @@ $allCategories = [
 <section class="rekomendasi">
     <div class="title-row">
         <h2>Rekomendasi Buku</h2>
-        <h3><a href="rekomendasi.php" class="selengkapnya-link">Selengkapnya</a></h3>
+        <h3><a href="rekomendasiBuku.php" class="selengkapnya-link">Selengkapnya</a></h3>
     </div>
     <div class="grid">
         <?php foreach($topBooks as $buku): ?>
