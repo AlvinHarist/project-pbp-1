@@ -1,5 +1,4 @@
 <?php
-// bayar.php - proses pembayaran untuk pesanan (menyelesaikan pesanan pending)
 session_start();
 require_once __DIR__ . '/config.php';
 
@@ -21,7 +20,6 @@ if ($trxId === '') {
 $msg = '';
 $errors = [];
 
-// fetch transaksi
 $stmt = $conn->prepare('SELECT id, Total_harga, Status, id_user FROM transaksi WHERE id = ? LIMIT 1');
 $stmt->bind_param('s', $trxId);
 $stmt->execute();
@@ -33,19 +31,16 @@ if (!($trx = $res->fetch_assoc())) {
 }
 $stmt->close();
 
-// basic ownership check (buyers can only pay their orders)
 if ($trx['id_user'] !== $userId) {
     http_response_code(403);
     echo 'Anda tidak diizinkan memproses pesanan ini.';
     exit;
 }
 
-// only allow payments for pending/pembayaran-waiting statuses
-if (strtolower($trx['Status']) !== strtolower('Menunggu Pembayaran') && strtolower($trx['Status']) !== strtolower('Pending')) {
+if (!in_array(strtolower($trx['Status']), ['menunggu pembayaran', 'pending'])) {
     $msg = 'Pesanan tidak dalam status Menunggu Pembayaran. Status sekarang: ' . htmlspecialchars($trx['Status']);
 }
 
-// fetch order items
 $items = [];
 $stmt = $conn->prepare('SELECT ID_Buku, Jumlah, Harga_Satuan FROM detail_transaksi WHERE ID_Transaksi = ?');
 $stmt->bind_param('s', $trxId);
@@ -58,12 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($msg)) {
     $metode = $_POST['metode'] ?? 'Transfer Bank';
     $metode = in_array($metode, ['Transfer Bank', 'E-Wallet', 'COD']) ? $metode : 'Transfer Bank';
 
-    // begin mysql transaction and process
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
     try {
         $conn->begin_transaction();
 
-        // lock and verify stock for each buku
         $insStockHistory = $conn->prepare('INSERT INTO stock_history (id_buku, change_qty, reason) VALUES (?, ?, ?)');
         $updBuku = $conn->prepare('UPDATE buku SET Stok = Stok - ? WHERE id = ?');
 
@@ -71,7 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($msg)) {
             $idBuku = $it['ID_Buku'];
             $need = intval($it['Jumlah']);
 
-            // lock row
             $lock = $conn->prepare('SELECT Stok FROM buku WHERE id = ? FOR UPDATE');
             $lock->bind_param('s', $idBuku);
             $lock->execute();
@@ -84,25 +76,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($msg)) {
                 throw new Exception("Stok untuk buku $idBuku tidak mencukupi. Tersedia: $available, diperlukan: $need");
             }
 
-            // decrement stock
             $updBuku->bind_param('is', $need, $idBuku);
-            if (!$updBuku->execute()) throw new Exception('Gagal mengurangi stok untuk ' . $idBuku);
+            $updBuku->execute();
 
-            // record stock history (negative change)
             $reason = 'Penjualan: ' . $trxId;
             $changeQty = -1 * $need;
             $insStockHistory->bind_param('sis', $idBuku, $changeQty, $reason);
             $insStockHistory->execute();
         }
 
-        // mark transaksi as Dibayar
         $stmt = $conn->prepare('UPDATE transaksi SET Status = ? WHERE id = ?');
         $newStatus = 'Dibayar';
         $stmt->bind_param('ss', $newStatus, $trxId);
         $stmt->execute();
         $stmt->close();
 
-        // insert into pembayaran table if possible (attempt; don't fail entire flow if table differs)
         try {
             $stmt = $conn->prepare('INSERT INTO pembayaran (ID_Transaksi, Metode, Status, Tanggal_Bayar) VALUES (?, ?, ?, CURDATE())');
             $payStatus = 'Berhasil';
@@ -110,12 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($msg)) {
             $stmt->execute();
             $stmt->close();
         } catch (Exception $e) {
-            // non-fatal: payment log failed, but order processing succeeded
-            // store a warning but continue
             $errors[] = 'Catatan pembayaran gagal disimpan: ' . $e->getMessage();
         }
 
-        // clear wishlist for this user
         $stmt = $conn->prepare('DELETE FROM wishlist WHERE id_user = ?');
         $stmt->bind_param('s', $userId);
         $stmt->execute();
@@ -123,81 +108,158 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($msg)) {
 
         $conn->commit();
 
-        // write email stub for payment confirmation
-        $emailDir = __DIR__ . '/emails';
-        if (!is_dir($emailDir)) @mkdir($emailDir, 0755, true);
-        $emailFile = $emailDir . '/payment_' . $trxId . '.html';
-        $html = '<html><body>';
-        $html .= '<h2>Pembayaran Diterima - ' . htmlspecialchars($trxId) . '</h2>';
-        $html .= '<p>User: ' . htmlspecialchars($user['Email'] ?? $user['id']) . '</p>';
-        $html .= '<ul>';
-        $total = 0;
-        foreach ($items as $it) {
-            $lineTotal = $it['Jumlah'] * $it['Harga_Satuan'];
-            $total += $lineTotal;
-            $html .= '<li>' . htmlspecialchars($it['ID_Buku']) . ' x ' . intval($it['Jumlah']) . ' = Rp ' . number_format($lineTotal,0,',','.') . '</li>';
-        }
-        $html .= '</ul>';
-        $html .= '<p>Total dibayar: Rp ' . number_format($total,0,',','.') . '</p>';
-        $html .= '<p>Status pesanan: ' . htmlspecialchars($newStatus) . '</p>';
-        if (!empty($errors)) {
-            $html .= '<p><strong>Catatan:</strong></p><ul>';
-            foreach ($errors as $er) $html .= '<li>' . htmlspecialchars($er) . '</li>';
-            $html .= '</ul>';
-        }
-        $html .= '</body></html>';
-        @file_put_contents($emailFile, $html);
-
-        $msg = 'Pembayaran berhasil, pesanan diupdate menjadi: ' . $newStatus;
+        $msg = '✅ Pembayaran berhasil! Pesanan telah diupdate menjadi: ' . $newStatus;
     } catch (Exception $e) {
         $conn->rollback();
-        $errors[] = 'Pembayaran gagal: ' . $e->getMessage();
+        $errors[] = '❌ Pembayaran gagal: ' . $e->getMessage();
     } finally {
-        // restore mysqli error reporting to defaults (optional)
         mysqli_report(MYSQLI_REPORT_OFF);
     }
 }
-
-// render page
 ?>
+
 <?php include 'includes/header.php'; ?>
-<div class="container" style="padding:40px 0;">
-    <h2>Bayar Pesanan <?php echo htmlspecialchars($trxId); ?></h2>
 
-    <?php if (!empty($msg)) echo '<p style="color:green">' . htmlspecialchars($msg) . '</p>'; ?>
-    <?php if (!empty($errors)) { echo '<div style="color:red"><ul>'; foreach ($errors as $e) echo '<li>' . htmlspecialchars($e) . '</li>'; echo '</ul></div>'; } ?>
+<style>
+    .bayar-page {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        background-color: #f5f6fa;
+        color: #333;
+        padding: 40px 0;
+    }
+    .bayar-page .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .bayar-page h2, .bayar-page h3 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+    .bayar-page table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        background: #fafafa;
+    }
+    .bayar-page th, .bayar-page td {
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+    .bayar-page th {
+        background-color: #3498db;
+        color: #fff;
+    }
+    .bayar-page tfoot td {
+        background-color: #f0f0f0;
+        font-weight: bold;
+    }
+    .bayar-page .msg-success {
+        background: #e8f9e8;
+        border: 1px solid #2ecc71;
+        color: #2e7d32;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+    .bayar-page .msg-error {
+        background: #fdecea;
+        border: 1px solid #e74c3c;
+        color: #c0392b;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+    .bayar-page button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        font-size: 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .bayar-page button:hover {
+        background-color: #2980b9;
+    }
+    .bayar-page label {
+        display: block;
+        margin: 6px 0;
+    }
+    .bayar-page a {
+        color: #2980b9;
+        text-decoration: none;
+    }
+    .bayar-page a:hover {
+        text-decoration: underline;
+    }
+</style>
 
-    <h3>Ringkasan Pesanan</h3>
-    <table style="width:100%; border-collapse:collapse">
-        <thead>
-            <tr><th>Produk</th><th>Jumlah</th><th>Harga Satuan</th><th>Subtotal</th></tr>
-        </thead>
-        <tbody>
-        <?php $sum=0; foreach ($items as $it): $line = $it['Jumlah'] * $it['Harga_Satuan']; $sum += $line; ?>
-            <tr>
-                <td><?php echo htmlspecialchars($it['ID_Buku']); ?></td>
-                <td><?php echo (int)$it['Jumlah']; ?></td>
-                <td>Rp <?php echo number_format($it['Harga_Satuan'],0,',','.'); ?></td>
-                <td>Rp <?php echo number_format($line,0,',','.'); ?></td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-        <tfoot>
-            <tr><td colspan="3" style="text-align:right"><strong>Total:</strong></td><td><strong>Rp <?php echo number_format($sum,0,',','.'); ?></strong></td></tr>
-        </tfoot>
-    </table>
+<div class="bayar-page">
+    <div class="container">
+        <h2>💳 Bayar Pesanan #<?php echo htmlspecialchars($trxId); ?></h2>
 
-    <?php if (empty($msg)): ?>
-    <h3>Metode Pembayaran</h3>
-    <form method="post">
-        <input type="hidden" name="id" value="<?php echo htmlspecialchars($trxId); ?>">
-        <label><input type="radio" name="metode" value="Transfer Bank" checked> Transfer Bank</label><br>
-        <label><input type="radio" name="metode" value="E-Wallet"> E-Wallet</label><br>
-        <label><input type="radio" name="metode" value="COD"> COD (Bayar di tempat)</label><br>
-        <p style="margin-top:12px"><button type="submit">Bayar Sekarang</button></p>
-    </form>
-    <?php else: ?>
-        <p><a href="index.php">Kembali ke Beranda</a></p>
-    <?php endif; ?>
+        <?php if (!empty($msg)): ?>
+            <div class="msg-success"><?php echo htmlspecialchars($msg); ?></div>
+        <?php endif; ?>
+
+        <?php if (!empty($errors)): ?>
+            <div class="msg-error">
+                <ul>
+                    <?php foreach ($errors as $e) echo '<li>' . htmlspecialchars($e) . '</li>'; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
+        <h3>📦 Ringkasan Pesanan</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Buku</th>
+                    <th>Jumlah</th>
+                    <th>Harga Satuan</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php $sum=0; foreach ($items as $it): 
+                $line = $it['Jumlah'] * $it['Harga_Satuan']; $sum += $line; ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($it['ID_Buku']); ?></td>
+                    <td><?php echo (int)$it['Jumlah']; ?></td>
+                    <td>Rp <?php echo number_format($it['Harga_Satuan'],0,',','.'); ?></td>
+                    <td>Rp <?php echo number_format($line,0,',','.'); ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" style="text-align:right;">Total:</td>
+                    <td>Rp <?php echo number_format($sum,0,',','.'); ?></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <?php if (empty($msg)): ?>
+            <h3>💰 Pilih Metode Pembayaran</h3>
+            <form method="post">
+                <input type="hidden" name="id" value="<?php echo htmlspecialchars($trxId); ?>">
+                <label><input type="radio" name="metode" value="Transfer Bank" checked> Transfer Bank</label>
+                <label><input type="radio" name="metode" value="E-Wallet"> E-Wallet</label>
+                <label><input type="radio" name="metode" value="COD"> COD (Bayar di tempat)</label>
+                <p style="margin-top:15px;">
+                    <button type="submit">💳 Bayar Sekarang</button>
+                </p>
+            </form>
+        <?php else: ?>
+            <p><a href="index.php">← Kembali ke Beranda</a></p>
+        <?php endif; ?>
+    </div>
 </div>
+
 <?php include 'includes/footer.php'; ?>

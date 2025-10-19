@@ -7,6 +7,7 @@ include "config.php";
 $errors = [];
 $success_message = '';
 
+
 // Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
