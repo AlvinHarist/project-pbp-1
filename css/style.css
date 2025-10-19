@@ -81,6 +81,8 @@ nav ul li a:hover {
 
 .search-box {
     position: relative;
+    display: inline-flex;
+    align-items: center;
 }
 
 .search-box i {
@@ -89,11 +91,6 @@ nav ul li a:hover {
     top: 50%;
     transform: translateY(-50%);
     color: var(--accent-color);
-}
-
-.search-box {
-    display: inline-flex;
-    align-items: center;
 }
 
 .search-box input {
@@ -147,7 +144,7 @@ nav ul li a:hover {
 }
 
 .daftar-icon {
-    background-color: #290b53;
+    background-color: #BDE3FF;
     padding: 2px;
     border-radius: 10%;
     color: white;
@@ -241,7 +238,6 @@ nav ul li a:hover {
 .hero-image {
     flex: 1;
     position: relative;
-    /* height: 600px; */
 }
 
 .hero-image img {
@@ -304,9 +300,8 @@ nav ul li a:hover {
 }
 
 .section-title p {
-    color: var(--secondary-color);
-    font-size: 18px;
     color: white;
+    font-size: 18px;
 }
 
 .category-grid {
@@ -337,6 +332,7 @@ nav ul li a:hover {
     line-height: 60px;
     border-radius: 50%;
 }
+
 .icon-fiction { background-color: #4a4e69; }
 .icon-romance { background-color: #e5989b; }
 .icon-thriller { background-color: #fca311; }
@@ -355,7 +351,6 @@ nav ul li a:hover {
     color: pink;
     font-size: 14px;
 }
-
 
 /* --- Featured Books Section --- */
 .section-header {
@@ -422,6 +417,7 @@ nav ul li a:hover {
     font-size: 13px;
 }
 
+/* Book cards */
 .book-image-container {
     position: relative;
 }
@@ -520,7 +516,7 @@ footer {
     color: var(--secondary-color);
 }
 
-/* --- Authentication Pages (Sign Up / Log In) --- */
+/* --- Authentication Pages --- */
 .auth-container {
     display: flex;
     justify-content: center;
@@ -550,15 +546,7 @@ footer {
     color: var(--secondary-color);
     margin-bottom: 30px;
 }
-/* Atur posisi ikon */
-/* .input-group .input-icon {
-    position: absolute;
-    top: 50%;
-    left: 12px;
-    transform: translateY(-50%);
-    color: #6c757d; /* warna ikon 
-    font-size: 18px;
-} */
+
 .input-group {
     margin-bottom: 20px;
     position: relative;
@@ -573,30 +561,21 @@ footer {
 .input-group .input-icon {
     position: absolute;
     left: 15px;
-    /* top: 45px; */
     top: 50%;
     transform: translateY(-50%);
     color: var(--accent-color);
 }
 
-.input-group input[type="text"] {
-    width: 100%;          /* biar penuh mengikuti container */
-    padding: 15px 15px 15px 40px; /* tambah padding biar tinggi lebih besar, 40px biar ada ruang untuk ikon */
-    font-size: 16px;       /* perbesar teks */
-    border: 1px solid #ccc;
-    border-radius: 8px;    /* biar ada sudut membulat */
-    box-sizing: border-box;
-}
-
-.input-group textarea,
+.input-group input[type="text"],
 .input-group input[type="email"],
-.input-group input[type="password"] {
+.input-group input[type="password"],
+.input-group textarea {
     width: 100%;
-    padding: 12px 15px 12px 40px; /* Padding for icon */
+    padding: 15px 15px 15px 40px;
+    font-size: 16px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     font-family: var(--font-family);
-    font-size: 16px;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
@@ -609,7 +588,8 @@ footer {
 .input-group .toggle-password {
     position: absolute;
     right: 15px;
-    top: 45px;
+    top: 50%;
+    transform: translateY(-50%);
     color: var(--accent-color);
     cursor: pointer;
 }
@@ -674,4 +654,3 @@ footer {
     color: #0f5132;
     text-align: center;
 }
-

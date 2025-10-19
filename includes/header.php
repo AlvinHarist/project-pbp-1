@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookHaven - Discover Your Next Great Read</title>
+
     <title>BukaBuku</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,6 +26,11 @@
                 <li><a href="about.php">About</a></li>
             </ul>
             <div class="nav-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Cari buku, penulis, genre...">
+                </div>
+
                 <form action="search.php" method="get" class="search-box" role="search">
                     <label for="q" class="sr-only">Cari</label>
                     <i class="fas fa-search" aria-hidden="true"></i>
@@ -42,8 +49,6 @@
                     <?php endif; ?>
                 </div>
             </div>
-        </nav>
     </div>
 </header>
-
 <main>
