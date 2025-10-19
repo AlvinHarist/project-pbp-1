@@ -245,9 +245,8 @@ function get_image_url($book_id, $folder, $fallback) {
             <div id="product-form-container" class="mp-form-wrapper" style="display: <?php echo $edit_mode ? 'block' : 'none'; ?>;"> 
                 <div class="mp-form-card">
                     <h3 id="form-title" class="mp-form-title"><?php echo $edit_mode ? 'Edit Buku' : 'Tambah Buku Baru'; ?></h3>
-                    <button type="submit" id="submit-form-btn" class="mp-submit-btn">
-                        <?php echo $edit_mode ? 'Update Produk' : 'Simpan Produk'; ?>
-                    </button>
+                    <!-- <button type="submit" id="submit-form-btn" class="mp-submit-btn">
+                    </button> -->
 
                     <form action="manajemenProduk.php" method="POST" class="mp-product-form">
                         
