@@ -11,6 +11,20 @@ $userId = $_SESSION['user']['id'];
 $errors = [];
 $success = '';
 
+// profile photo folder and helper
+$photoDir = __DIR__ . '/images/fotoprofil';
+if (!is_dir($photoDir)) @mkdir($photoDir, 0755, true);
+
+// helper to find existing photo for user id
+function find_profile_photo($dir, $id) {
+    $candidates = ['jpg','jpeg','png'];
+    foreach ($candidates as $ext) {
+        $p = $dir . '/' . $id . '.' . $ext;
+        if (file_exists($p)) return $p;
+    }
+    return null;
+}
+
 // fetch fresh user data
 $stmt = $conn->prepare('SELECT id, Nama, Email, alamat, Nomor_telepon, Role, Password FROM user WHERE id = ? LIMIT 1');
 $stmt->bind_param('s', $userId);
@@ -26,6 +40,57 @@ if (!$user) {
 // handle form posts
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
+
+    // handle photo upload
+    if ($action === 'upload_photo') {
+        if (!isset($_FILES['profile_photo']) || $_FILES['profile_photo']['error'] === UPLOAD_ERR_NO_FILE) {
+            $errors[] = 'Tidak ada file yang diunggah.';
+        } else {
+            $f = $_FILES['profile_photo'];
+            if ($f['error'] !== UPLOAD_ERR_OK) {
+                $errors[] = 'Terjadi kesalahan saat mengunggah.';
+            } else {
+                // validate size (max 3MB)
+                if ($f['size'] > 3 * 1024 * 1024) {
+                    $errors[] = 'File terlalu besar (maks 3 MB).';
+                } else {
+                    // validate type
+                    $info = getimagesize($f['tmp_name']);
+                    $allowed = [IMAGETYPE_JPEG => 'jpg', IMAGETYPE_PNG => 'png'];
+                    if ($info === false || !isset($allowed[$info[2]])) {
+                        $errors[] = 'Format gambar tidak didukung. Gunakan JPG atau PNG.';
+                    } else {
+                        $ext = $allowed[$info[2]];
+                        // remove existing profile photos for this user
+                        foreach (['jpg','jpeg','png'] as $e) {
+                            $old = $photoDir . '/' . $userId . '.' . $e;
+                            if (file_exists($old)) @unlink($old);
+                        }
+                        $dst = $photoDir . '/' . $userId . '.' . $ext;
+                        if (move_uploaded_file($f['tmp_name'], $dst)) {
+                            // optionally set permissions
+                            @chmod($dst, 0644);
+                            $success = 'Foto profil berhasil diunggah.';
+                        } else {
+                            $errors[] = 'Gagal menyimpan file.';
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // handle photo delete
+    if ($action === 'delete_photo') {
+        $deleted = false;
+        foreach (['jpg','jpeg','png'] as $e) {
+            $p = $photoDir . '/' . $userId . '.' . $e;
+            if (file_exists($p)) {
+                if (@unlink($p)) $deleted = true; else $errors[] = 'Gagal menghapus file: ' . basename($p);
+            }
+        }
+        if ($deleted) $success = 'Foto profil dihapus.'; else $success = 'Tidak ada foto profil untuk dihapus.';
+    }
 
     if ($action === 'update_profile') {
         $nama = trim($_POST['nama'] ?? '');
@@ -134,11 +199,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="profile-grid">
         <div class="profile-card">
+            <?php
+                // determine profile photo URL (relative web path)
+                $profilePhoto = 'images/fotoprofil/profil-empty.jpg';
+                $found = find_profile_photo($photoDir, $userId);
+                if ($found) {
+                    // convert filesystem path to relative web path
+                    $profilePhoto = 'images/fotoprofil/' . rawurlencode(basename($found));
+                }
+            ?>
+            <div style="text-align:center; margin-bottom:10px;">
+                <img src="<?php echo $profilePhoto; ?>" alt="Foto profil" style="width:140px; height:140px; object-fit:cover; border-radius:70px; border:3px solid #fff; box-shadow:0 6px 18px rgba(0,0,0,0.08);">
+            </div>
             <h3><?php echo htmlspecialchars($user['Nama']); ?></h3>
             <p class="small-note"><strong>Role:</strong> <?php echo htmlspecialchars($user['Role'] ?? 'Pembeli'); ?></p>
             <p class="small-note"><strong>Email:</strong><br><?php echo htmlspecialchars($user['Email']); ?></p>
             <p class="small-note"><strong>Telepon:</strong><br><?php echo htmlspecialchars($user['Nomor_telepon'] ?? '-'); ?></p>
             <p class="small-note"><strong>Alamat:</strong><br><?php echo nl2br(htmlspecialchars($user['alamat'] ?? '-')); ?></p>
+            <div style="margin-top:12px;">
+                <form method="post" enctype="multipart/form-data" style="display:flex; gap:8px; align-items:center; justify-content:center;">
+                    <input type="hidden" name="action" value="upload_photo">
+                    <input type="file" name="profile_photo" accept="image/jpeg,image/png" required>
+                    <button type="submit" class="btn">Unggah</button>
+                </form>
+                <form method="post" style="display:flex; gap:8px; align-items:center; justify-content:center; margin-top:8px;">
+                    <input type="hidden" name="action" value="delete_photo">
+                    <button type="submit" class="btn secondary" onclick="return confirm('Hapus foto profil Anda?');">Hapus Foto</button>
+                </form>
+            </div>
         </div>
 
         <div class="profile-main">
