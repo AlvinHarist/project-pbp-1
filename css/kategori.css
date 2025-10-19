@@ -1,0 +1,259 @@
+/* Import Font Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* --- Reset & Base Styles --- */
+body.page-kategori {
+    font-family: 'Poppins', sans-serif;
+    background-color: #F9FAFB;
+    color: #111827;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* --- Page Header --- */
+.page-header {
+    background: linear-gradient(to right, #EFF6FF, #F5F3FF);
+    padding: 3rem 0;
+}
+
+.page-header h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.page-header p {
+    font-size: 1.125rem;
+    color: #4B5563;
+    max-width: 42rem;
+    font-weight: 500;
+}
+
+/* --- Category Section --- */
+.category-section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+.category-section.bg-white {
+    background-color: #ffffff;
+}
+.category-section.bg-gradient {
+    background: linear-gradient(to right, rgba(239, 246, 255, 0.5), rgba(245, 243, 255, 0.5));
+}
+
+.category-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.category-section-header h2 {
+    font-size: 1.875rem;
+    font-weight: 700;
+}
+
+.selengkapnya-link {
+    color: #2c5f8d;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: text-decoration 0.2s;
+}
+.selengkapnya-link:hover {
+    text-decoration: underline;
+}
+
+/* --- Books Carousel --- */
+.books-carousel-container {
+    position: relative;
+}
+
+.books-carousel-content {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 1rem;
+    margin-left: -0.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+}
+.books-carousel-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+
+.books-carousel-item {
+    flex: 0 0 50%;
+    min-width: 0;
+    padding-left: 0.5rem;
+    display: flex;
+}
+
+@media (min-width: 640px) {
+    .books-carousel-item {
+        flex-basis: 33.3333%;
+    }
+}
+@media (min-width: 768px) {
+    .books-carousel-content {
+        margin-left: -1rem;
+    }
+    .books-carousel-item {
+        flex-basis: 25%;
+        padding-left: 1rem;
+    }
+}
+@media (min-width: 1024px) {
+    .books-carousel-item {
+        flex-basis: 20%;
+    }
+}
+
+
+/* --- Book Card --- */
+.kategori-book-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+    height: 100%;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    width: 100%;
+}
+.kategori-book-card:hover {
+    transform: scale(1.05);
+}
+
+.kategori-book-card-image-wrapper {
+    position: relative;
+    aspect-ratio: 2 / 3;
+    background-color: #F3F4F6;
+    overflow: hidden;
+}
+
+.kategori-book-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.kategori-book-card-content {
+    padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 180px;
+}
+
+.kategori-book-card-title {
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+.kategori-book-card-title a {
+    color: inherit;
+    text-decoration: none;
+}
+.kategori-book-card-title a:hover {
+    text-decoration: underline;
+}
+
+.kategori-book-card-author {
+    color: #6B7280;
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+    font-weight: 400;
+}
+
+.kategori-book-card-footer-wrapper {
+    margin-top: auto;
+}
+
+.kategori-book-card-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+.kategori-book-card-rating .star {
+    width: 1rem;
+    height: 1rem;
+    fill: #FACC15;
+    color: #FACC15;
+}
+.kategori-book-card-rating span {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.kategori-book-card-price {
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.btn-add-cart {
+    width: 100%;
+    background-color: #2c5f8d;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+.btn-add-cart:hover {
+    background-color: #234d72;
+}
+.btn-add-cart .icon-cart {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* --- Footer --- */
+.footer {
+    background-color: #2c5f8d;
+    color: white;
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
+.footer p {
+    color: #E5E7EB;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* --- Lain-lain --- */
+.no-books-message {
+    padding-left: 1rem;
+    color: #6B7280;
+}
