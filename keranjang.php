@@ -225,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         max-width: 1100px;
                     }
                     h2, h3 {
-                        color: #2e7d32;
+                        color: #041018ff;
                         margin-bottom: 18px;
                         padding-left: 10px;
                     }
@@ -244,8 +244,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         text-align: center;
                     }
                     .cart-table th {
-                        background: #e8f5e9;
-                        color: #388e3c;
+                        background: #3fb1fcff;
+                        color: #080808ff;
                         font-weight: 600;
                     }
                     .cart-table img {
@@ -270,11 +270,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         transition: border 0.2s;
                     }
                     input[type="number"]:focus {
-                        border: 1.5px solid #388e3c;
+                        border: 1.5px solid #3498db;
                         outline: none;
                     }
                     button {
-                        background: #388e3c;
+                        background: #3498db;
                         color: #fff;
                         border: none;
                         border-radius: 5px;
@@ -284,7 +284,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         transition: background 0.2s;
                     }
                     button:hover, button:focus {
-                        background: #2e7d32;
+                        background: #3498db;
                     }
                     textarea {
                         border: 1px solid #bdbdbd;
