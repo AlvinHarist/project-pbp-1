@@ -169,9 +169,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <style>
 .profile-wrapper { max-width: 980px; margin: 32px auto; background:#fff; padding:24px; border-radius:10px; box-shadow:0 8px 30px rgba(0,0,0,0.04); }
-.profile-grid { display:flex; gap:30px; align-items:flex-start; flex-wrap:wrap; }
-.profile-card { flex:0 0 260px; padding:18px; border-radius:8px; background:#f7fbff; }
-.profile-main { flex:1 1 600px; }
+.profile-grid { display:flex; gap:30px; align-items:flex-start; flex-wrap:nowrap; }
+.profile-card { flex: 0 0 320px; padding:18px; border-radius:8px; background:#f7fbff; }
+.profile-main { flex: 1 1 auto; }
+
+/* Responsive: stack vertically on small screens */
+@media (max-width: 900px) {
+    .profile-grid { flex-wrap:wrap; }
+    .profile-card { flex: 0 0 100%; }
+    .profile-main { flex: 0 0 100%; }
+}
 .field { margin-bottom:14px; }
 .field label { display:block; font-weight:600; margin-bottom:6px; color:#2e3d49; }
 .field input[type="text"], .field input[type="email"], .field input[type="password"], .field textarea {
