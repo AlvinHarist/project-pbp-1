@@ -84,7 +84,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="email" name="email" class="login-input" required>
 
         <label class="login-label">Password</label>
-        <input type="password" name="password" class="login-input" required>
+        <div style="position:relative; display:flex; align-items:center;">
+          <input type="password" id="password" name="password" class="login-input" required style="padding-right:38px;">
+          <button type="button" id="togglePassword" aria-label="Toggle password visibility" style="position:absolute; right:6px; background:transparent; border:none; cursor:pointer; padding:6px;">
+            <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.79 21.79 0 0 1 5-5.94"></path><path d="M1 1l22 22"></path></svg>
+          </button>
+        </div>
 
         <div class="remember">
           <input type="checkbox" id="remember">
@@ -97,4 +103,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </main>
 </body>
 </html>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var pwd = document.getElementById('password');
+  var btn = document.getElementById('togglePassword');
+  var eyeOpen = document.getElementById('eyeOpen');
+  var eyeClosed = document.getElementById('eyeClosed');
+  if (!pwd || !btn) return;
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    if (pwd.type === 'password') {
+      pwd.type = 'text';
+      if (eyeOpen) eyeOpen.style.display = 'none';
+      if (eyeClosed) eyeClosed.style.display = 'inline';
+    } else {
+      pwd.type = 'password';
+      if (eyeOpen) eyeOpen.style.display = 'inline';
+      if (eyeClosed) eyeClosed.style.display = 'none';
+    }
+    // keep focus on input after toggle
+    pwd.focus();
+  });
+});
+</script>
 

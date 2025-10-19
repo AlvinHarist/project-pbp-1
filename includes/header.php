@@ -20,7 +20,7 @@
             <ul>
                 <li><a href="kategori.php">Kategori</a></li>
                 <li><a href="#">Bestsellers</a></li>
-                <li><a href="terbitanBaru.php" class="active">Terbitan Baru</a></li>
+                <li><a href="terbitanBaru.php">Terbitan Baru</a></li>
                 <li><a href="about.php">About</a></li>
             </ul>
             <div class="nav-right">

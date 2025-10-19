@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // If there are no errors, process the data
     if (empty($errors)) {
         // --- THIS IS WHERE YOU WOULD SAVE THE USER TO A DATABASE ---
-
+        
         // IMPORTANT: NEVER store plain-text passwords. Always hash them.
         // $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -74,23 +74,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Optionally, redirect to a login page:
         // header('Location: login.php');
         // exit();
-    }
-
-    // Save the data into the database
-    $id_user = uniqid("U");
-
-    // hash password securely
-    // Use password_hash for new registrations so we store modern hashes.
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-    $stmt = $conn->prepare("INSERT INTO user (id, Nama, Email, alamat, Password, Role) VALUES (?, ?, ?, ?, ?, 'Pembeli')");
-    $stmt->bind_param("sssss", $id_user, $fullname, $email, $alamat, $hashed_password);
-
-    if ($stmt->execute()) {
+        // Save the data into the database
+        $id_user = uniqid("U");
+    
+        // hash password securely
+        // Use password_hash for new registrations so we store modern hashes.
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    
+        $stmt = $conn->prepare("INSERT INTO user (id, Nama, Email, alamat, Password, Role) VALUES (?, ?, ?, ?, ?, 'Pembeli')");
+        $stmt->bind_param("sssss", $id_user, $fullname, $email, $alamat, $hashed_password);
+        $stmt->execute();
         // echo "Registrasi berhasil!";
-    } else { 
-        echo "Error: " . $stmt->error;
     }
+    else {
+        // echo "Error: ";
+    }
+
+    // if ($stmt->execute()) {
+    //     // echo "Registrasi berhasil!";
+    // } else { 
+    //     echo "Error: " . $stmt->error;
+    // }
+
+    
 
             
 }
